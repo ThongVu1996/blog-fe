@@ -1,0 +1,141 @@
+#root {
+  width: 100%;
+}
+
+.container {
+  width: min(100% - 32px, 1200px);
+  margin-inline: auto;
+}
+
+.navbar {
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 1100;
+}
+
+.logo-icon {
+  background: var(--primary);
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+}
+
+.logo-text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* Nút Hamburger cho Mobile */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* Menu Navbar */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.nav-auth-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* RESPONSIVE NAVBAR */
+@media (max-width: 992px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: var(--white);
+    flex-direction: column;
+    padding: 100px 24px;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+    align-items: flex-start;
+    z-index: 10;
+  }
+
+  .nav-menu.is-open {
+    right: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav-link {
+    width: 100%;
+  }
+
+  .nav-auth-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.footer {
+  padding: 60px 0 40px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--text-light);
+  margin-top: 80px;
+}

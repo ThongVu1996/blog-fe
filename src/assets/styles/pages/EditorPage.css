@@ -1,0 +1,64 @@
+.editor-container {
+  max-width: 850px;
+  margin-inline: auto;
+  margin-block: 40px;
+  background: var(--white);
+  padding: clamp(20px, 5vw, 40px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.editor-header {
+  margin-bottom: 32px;
+  font-weight: 900;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Container cho phần chọn ảnh và hiển thị ảnh */
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Khung hiển thị ảnh xem trước */
+.image-preview-box {
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-placeholder {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.editor-submit-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
+  padding-block: 14px;
+}
+
+
+
+/*******************************************/

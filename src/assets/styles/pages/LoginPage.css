@@ -1,0 +1,42 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(40px, 12vh, 100px);
+  padding-inline: 16px;
+}
+
+.login-form {
+  background: var(--white);
+  padding: clamp(24px, 5vw, 40px);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.login-icon-wrapper {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-title {
+  margin-bottom: 32px;
+  font-weight: 900;
+  font-size: 1.75rem;
+}
+
+.login-submit-btn {
+  margin: 0 auto;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  text-align: left;
+  font-weight: 500;
+  display: block;
+}
