@@ -5,6 +5,7 @@ import {
   AlertTriangle, CheckCircle, XCircle 
 } from 'lucide-react';
 import { API_BASE_URL, getImageUrl, STORAGE_KEY } from '../config/constants';
+import Markdown from '../components/Markdown';
 
 const DetailPage = ({ isLoggedIn }) => {
   const { slug } = useParams();
@@ -126,9 +127,9 @@ const DetailPage = ({ isLoggedIn }) => {
         <span>•</span>
         <span>Date: {post.created_at?.split('T')[0]}</span>
       </div>
-
-      <div className="detail-content" dangerouslySetInnerHTML={{ __html: post.content }} />
-
+      {
+        post.type == 'html' ? <div className="detail-content" dangerouslySetInnerHTML={{ __html: post.content }} /> :       <Markdown content={post.content}/>
+      }
       {/* 2. Popup xác nhận xóa bài viết */}
       {showDeleteModal && (
         <div className="modal-overlay">

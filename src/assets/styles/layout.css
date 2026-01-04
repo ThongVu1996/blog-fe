@@ -3,7 +3,7 @@
 }
 
 .container {
-  width: min(100% - 32px, 1200px);
+  width: 90%;
   margin-inline: auto;
 }
 

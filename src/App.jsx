@@ -414,7 +414,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Navbar categories={categories} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
-      <main className="container" style={{ minHeight: '80vh' }}>
+      <main className="container" style={{ minHeight: '80vh', width: '90%' }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/category/:id" element={<CategoryPage categories={categories}/>} />
