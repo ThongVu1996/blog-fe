@@ -1,10 +1,8 @@
 .detail-view {
-  /* max-width: 1000px;
-  margin: 40px auto; */
+  margin: 100px auto;
   padding: 0 16px;
 }
 
-/* Header chứa các nút điều hướng */
 .detail-header {
   display: flex;
   justify-content: space-between;
@@ -82,21 +80,19 @@
   background: #fef2f2;
 }
 
-/* Styles cho Modal Popup */
 .modal-overlay {
-  position: fixed; /* Giữ cố định theo khung hình trình duyệt */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Chiều rộng toàn bộ viewport */
-  height: 100vh; /* Chiều cao toàn bộ viewport */ /* Màu nền mờ giúp làm nổi bật popup */
-  backdrop-filter: blur(4px); /* Làm mờ nhẹ hậu cảnh (hiệu ứng hiện đại) */
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(4px);
   display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  z-index: 2000; /* Đảm bảo luôn nằm trên các thành phần khác */
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
-/* Nội dung Popup */
 .modal-content {
   background: var(--white);
   padding: 32px;
@@ -123,5 +119,71 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+.mask-origin-content {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.mask-origin-content > .markdown-body:nth-child(1) {
+  flex: 0 0 320px;
+  width: 320px;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  background: white;
+  border-radius: 30px;
+  padding: 30px 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+.mask-origin-content > .markdown-body:nth-child(2) {
+  flex: 1;
+  width: calc(100% - 350px);
+  contain: inline-size;
+  overflow-anchor: none;
+  background: white;
+  border-radius: 30px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.markdown-body {
+  ul {
+    list-style: none;
+    a {
+      color: black;
+    }
+  }
+}
+
+.markdown-body a.active-toc {
+  color: blue;
+  font-weight: 700;
+  border-left: 3px solid #7c3aed;
+  padding-left: 10px;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 992px) {
+  .mask-origin-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mask-origin-content > .markdown-body:nth-child(1) {
+    position: unset;
+    width: 100%;
+    overflow-y: unset;
+    max-height: unset;
+  }
+
+  .mask-origin-content > .markdown-body:nth-child(2) {
+    width: 100%;
   }
 }

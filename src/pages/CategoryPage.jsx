@@ -12,8 +12,7 @@ const CategoryPage = ({categories}) => {
   useEffect(() => {
     setLoading(true);
     const value = categories.find(cat => cat.name.toLowerCase() === id)?.id;
-    console.log(id);
-    fetch(`${API_BASE_URL}/posts?category_id=${value}`)
+    fetch(`${API_BASE_URL}/posts?category_id=${id}`)
       .then(res => res.json())
       .then(result => {
         setPosts(result.data || []);

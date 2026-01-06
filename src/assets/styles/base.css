@@ -35,3 +35,24 @@ body {
     transform: rotate(360deg);
   }
 }
+
+
+html {
+  /* Luôn dành chỗ cho thanh cuộn để chiều rộng màn hình (vw) không bị thay đổi */
+  scrollbar-gutter: stable; 
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+.container {
+  /* Thay vì width: 90%, dùng 90vw để giá trị luôn ổn định theo cửa sổ */
+  width: 90vw;
+  margin-inline: 5vw;
+  
+  /* BÙA CHÚ CHỐNG RUNG: Ép trình duyệt dùng GPU xử lý Layer riêng */
+  transform: translateZ(0);
+  will-change: transform;
+  
+  display: block;
+  box-sizing: border-box;
+}

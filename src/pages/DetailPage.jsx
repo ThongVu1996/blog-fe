@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  ChevronLeft, Edit, Trash2, Loader2, 
-  AlertTriangle, CheckCircle, XCircle 
+import {
+  ChevronLeft, Edit, Trash2, Loader2,
+  AlertTriangle, CheckCircle, XCircle
 } from 'lucide-react';
 import { API_BASE_URL, getImageUrl, STORAGE_KEY } from '../config/constants';
 import Markdown from '../components/Markdown';
+import { useRef } from 'react';
 
 const DetailPage = ({ isLoggedIn }) => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  
+
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -18,6 +19,17 @@ const DetailPage = ({ isLoggedIn }) => {
 
   // State quản lý Toast: { message: string, type: 'success' | 'error' | null }
   const [toast, setToast] = useState({ message: null, type: null });
+
+  const tocRef = useRef(null);
+  const handleOnClick = (e) => {
+    const targetLink = e.target.closest('a');
+    if (!targetLink || !targetLink.getAttribute('href')?.startsWith('#')) return;
+    if (tocRef.current) {
+      const allLinks = tocRef.current.querySelectorAll('a');
+      allLinks.forEach(link => link.classList.remove('active-toc'));
+    }
+    targetLink.classList.add('active-toc');
+  };
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/posts/detail/${slug}`)
@@ -29,7 +41,6 @@ const DetailPage = ({ isLoggedIn }) => {
       .catch(() => setLoading(false));
   }, [slug]);
 
-  // Logic chặn cuộn trang khi Modal mở
   useEffect(() => {
     if (showDeleteModal) {
       document.body.style.overflow = 'hidden';
@@ -58,9 +69,8 @@ const DetailPage = ({ isLoggedIn }) => {
           'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEY)}`
         }
       });
-      
+
       if (res.ok) {
-        // Thông báo thành công
         showToast("Delete Post Successfully", "success");
         setTimeout(() => {
           navigate('/');
@@ -70,7 +80,7 @@ const DetailPage = ({ isLoggedIn }) => {
         showToast(result.message || "Delete Post Failed", "error");
       }
     } catch (error) {
-      showToast("Network error. Please try again later.", "error");
+      showToast(`${error} || Network error. Please try again later.`, "error");
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -89,7 +99,9 @@ const DetailPage = ({ isLoggedIn }) => {
       {toast.message && (
         <div className="toast-container">
           <div className={`toast toast-${toast.type}`}>
-            {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
+            {toast.type === 'success' ?
+              <CheckCircle size={20} /> :
+              <XCircle size={20} />}
             <span>{toast.message}</span>
           </div>
         </div>
@@ -102,14 +114,12 @@ const DetailPage = ({ isLoggedIn }) => {
 
         {isLoggedIn && (
           <div className="detail-actions">
-            <button 
-              onClick={() => navigate(`/editor/${post.id}`)} 
+            <button onClick={() => navigate(`/editor/${post.id}`)}
               className="btn-primary"
             >
               <Edit size={16} /> Edit
             </button>
-            <button 
-              onClick={() => setShowDeleteModal(true)} 
+            <button onClick={() => setShowDeleteModal(true)}
               className="btn-delete"
             >
               <Trash2 size={16} /> Delete
@@ -119,16 +129,21 @@ const DetailPage = ({ isLoggedIn }) => {
       </div>
 
       <img src={getImageUrl(post.image)} className="detail-banner" alt={post.title} />
-      
+
       <h1 className="detail-title">{post.title}</h1>
-      
+
       <div className="detail-meta">
         <span>Author: <strong>{post.author}</strong></span>
         <span>•</span>
         <span>Date: {post.created_at?.split('T')[0]}</span>
       </div>
       {
-        post.type == 'html' ? <div className="detail-content" dangerouslySetInnerHTML={{ __html: post.content }} /> :       <Markdown content={post.content}/>
+        post.type == 'html' ?
+          <div className="detail-content" dangerouslySetInnerHTML={{ __html: post.content }} /> : <div
+            className='mask-origin-content'>
+            <Markdown content={post.toc} ref={tocRef} onClick={handleOnClick} />
+            <Markdown content={post.content} />
+          </div>
       }
       {/* 2. Popup xác nhận xóa bài viết */}
       {showDeleteModal && (
@@ -140,19 +155,14 @@ const DetailPage = ({ isLoggedIn }) => {
               Are you sure you want to delete the post <strong>"{post.title}"</strong>?
             </p>
             <div className="modal-buttons">
-              <button 
-                className="btn-outline" 
-                onClick={() => setShowDeleteModal(false)}
+              <button className="btn-outline" onClick={() => setShowDeleteModal(false)}
                 disabled={isDeleting}
               >
                 Cancel
               </button>
-              <button 
-                className="btn-delete" 
-                onClick={handleDelete}
-                disabled={isDeleting}
-              >
-                {isDeleting ? <Loader2 className="spin" size={16} /> : 'Confirm Delete'}
+              <button className="btn-delete" onClick={handleDelete} disabled={isDeleting}>
+                {isDeleting ?
+                  <Loader2 className="spin" size={16} /> : 'Confirm Delete'}
               </button>
             </div>
           </div>

@@ -2,28 +2,31 @@
   width: 100%;
 }
 
-.container {
-  width: 90%;
-  margin-inline: auto;
-}
-
 .navbar {
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-bottom: 1px solid var(--border);
-  height: 72px;
   display: flex;
-  align-items: center;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 0 5%;
+  height: 70px;
+  z-index: 1000;
+  /* Quan trọng: Ngăn chặn layout shift do thanh cuộn */
+  scrollbar-gutter: stable; 
+  /* Đảm bảo box-sizing không làm thay đổi size khi có border/padding */
+  box-sizing: border-box;
 }
-
 .nav-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+}
+
+.nav-content.container {
+  margin: 0;
+  padding: 0 16px;
 }
 
 .logo {
