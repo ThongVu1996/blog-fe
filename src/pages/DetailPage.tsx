@@ -28,6 +28,23 @@ const DetailPage = () => {
   const handleOnClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const targetLink = (e.target as HTMLElement).closest('a');
     if (!targetLink || !targetLink.getAttribute('href')?.startsWith('#')) return;
+
+    e.preventDefault();
+
+    // Decode URI to match Vietnamese characters in element IDs
+    const rawId = targetLink.getAttribute('href')?.slice(1) || '';
+    const targetId = decodeURIComponent(rawId);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      const navbarHeight = 100; // Match scroll-padding-top value
+      window.scrollTo({
+        top: targetElement.offsetTop - navbarHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    // Update active TOC link
     if (tocRef.current) {
       const allLinks = tocRef.current.querySelectorAll('a');
       allLinks.forEach((link: Element) => link.classList.remove('active-toc'));
