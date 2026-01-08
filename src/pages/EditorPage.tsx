@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
 import Toast from '../components/Toast';
-import { useCategories } from '../hooks';
+import { useCategories, useCreatePost, useUpdatePost } from '../hooks';
 import { postService } from '../services/post.service';
 
 const EditorPage = () => {
@@ -12,6 +12,8 @@ const EditorPage = () => {
 
   // Get categories from React Query instead of props
   const { data: categories = [] } = useCategories();
+  const createPost = useCreatePost();
+  const updatePost = useUpdatePost();
 
   // State quản lý Toast
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -120,10 +122,10 @@ const EditorPage = () => {
 
     try {
       if (id) {
-        await postService.update(id, data);
+        await updatePost.mutateAsync({ id, formData: data });
         showToast("Cập nhật bài viết thành công!");
       } else {
-        await postService.create(data);
+        await createPost.mutateAsync(data);
         showToast("Lưu bài viết mới thành công!");
       }
       setTimeout(() => navigate('/'), 1000);
