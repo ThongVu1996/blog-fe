@@ -1,9 +1,10 @@
 import { Loader2, TrendingUp, Mail } from 'lucide-react';
 import PostCard from './PostCard';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { usePosts } from '../hooks';
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const { data: posts = [], isLoading } = usePosts();
 
   if (isLoading) return (
@@ -22,7 +23,7 @@ const HomePage = () => {
       {/* 1. FEATURED SECTION (Tin tiêu điểm) */}
       {featuredPost && (
         <section className="featured-grid">
-          <Link to={`/posts/${featuredPost.slug}`} className="main-featured">
+          <div onClick={() => navigate(`/posts/${featuredPost.slug}`)} className="main-featured" style={{ cursor: 'pointer' }}>
             <img src={featuredPost.banner || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200"}
               className="featured-img" alt="Featured" />
             <div className="featured-content">
@@ -30,7 +31,7 @@ const HomePage = () => {
               <h2 className="featured-title">{featuredPost.title}</h2>
               <p>{featuredPost.summary || "Khám phá những thay đổi quan trọng trong hệ thống kĩ thuật mới nhất..."}</p>
             </div>
-          </Link>
+          </div>
 
           <div className="sub-featured-group">
             {/* Bạn có thể lấy thêm 2 bài tiếp theo nếu muốn giống hệt HTML mẫu */}
