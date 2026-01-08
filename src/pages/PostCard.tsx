@@ -9,10 +9,9 @@ const PostCard = ({ post, index }: PostCardProps) => {
   return (
     <div
       onClick={() => navigate(`/posts/${post.slug}`)}
-      className="news-item animate-fade border-gradient"
+      className="news-item animate-fade border-gradient news-item-link"
       style={{
-        animationDelay: `${(index || 0) * 0.1}s`,
-        cursor: 'pointer'
+        animationDelay: `${(index || 0) * 0.1}s`
       }}
     >
       {/* Phần hình ảnh bên trái */}
@@ -22,10 +21,7 @@ const PostCard = ({ post, index }: PostCardProps) => {
           alt={post.title}
           loading="lazy"
           decoding="async"
-          style={{
-            backgroundColor: 'var(--bg-darker)',
-            minHeight: '200px'
-          }}
+          className="news-item-image-placeholder"
         />
       </div>
 

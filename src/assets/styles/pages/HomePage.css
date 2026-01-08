@@ -39,9 +39,10 @@
 
 .main-featured:hover {
   transform: translateY(-2px);
-    box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
   border-color: #646cff;
 }
+
 .main-featured:hover .featured-img {
   transform: scale(1.05);
   filter: brightness(0.8);
@@ -53,11 +54,13 @@
   left: 0;
   right: 0;
   padding: 30px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
   color: #fff;
 }
 
-.featured-content.small { padding: 15px; }
+.featured-content.small {
+  padding: 15px;
+}
 
 .badge {
   background: var(--primary);
@@ -71,8 +74,15 @@
   display: inline-block;
 }
 
-.badge.danger { background: #ef4444; color: #fff; }
-.badge.info { background: #3b82f6; color: #fff; }
+.badge.danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+.badge.info {
+  background: #3b82f6;
+  color: #fff;
+}
 
 .featured-title {
   font-family: 'Orbitron', sans-serif;
@@ -145,11 +155,13 @@
   gap: 15px;
   margin-bottom: 18px;
   padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: 0.3s;
 }
 
-.trending-item:hover { transform: translateX(5px); }
+.trending-item:hover {
+  transform: translateX(5px);
+}
 
 .trending-num {
   font-family: 'Orbitron', sans-serif;
@@ -174,7 +186,9 @@
   margin-bottom: 20px;
 }
 
-.full-width { width: 100%; }
+.full-width {
+  width: 100%;
+}
 
 .submit-email {
   margin: 10px auto;
@@ -182,9 +196,12 @@
 
 /* RESPONSIVE */
 @media (max-width: 992px) {
-  .featured-grid, .news-layout {
+
+  .featured-grid,
+  .news-layout {
     grid-template-columns: 1fr;
   }
+
   .sub-featured-group {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: none;
@@ -192,6 +209,21 @@
 }
 
 @media (max-width: 600px) {
-  .sub-featured-group { grid-template-columns: 1fr; }
-  .featured-title { font-size: 1.5rem; }
+  .sub-featured-group {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* 4. POST CARD STYLES */
+.news-item-link {
+  cursor: pointer;
+}
+
+.news-item-image-placeholder {
+  background-color: var(--bg-darker);
+  min-height: 200px;
 }
