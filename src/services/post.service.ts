@@ -59,12 +59,13 @@ export const postService = {
 
     /**
      * Import content from external URL (e.g. GitHub Raw)
-     * Uses direct axios to avoid baseURL prefix
+     * Uses a separate axios instance without baseURL for external requests
      */
     importFromUrl: async (url: string): Promise<string> => {
-        // Import axios dynamically or usage specific import to bypass default api instance settings
-        const axios = require('axios');
-        const response = await axios.get(url);
+        // Create a fresh axios instance without baseURL for external requests
+        const { default: axios } = await import('axios');
+        const externalAxios = axios.create();
+        const response = await externalAxios.get(url);
         let content = response.data;
         if (typeof content !== 'string') {
             content = JSON.stringify(content);

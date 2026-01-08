@@ -36,7 +36,6 @@ const DetailPage = () => {
     const rawId = targetLink.getAttribute('href')?.slice(1) || '';
     const targetId = decodeURIComponent(rawId);
     const targetElement = document.getElementById(targetId);
-
     if (targetElement) {
       const navbarHeight = 100; // Match scroll-padding-top value
       window.scrollTo({

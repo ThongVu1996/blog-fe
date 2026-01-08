@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
+import { Loader2, Image as ImageIcon, Link, Download, Star, CheckCircle2, CheckCircle, XCircle } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
-import Toast from '../components/common/Toast';
 import { useCategories, useCreatePost, useUpdatePost } from '../hooks';
 import { postService } from '../services/post.service';
+import { slugify } from '../utils/slugify';
 
 const EditorPage = () => {
   const { id } = useParams();
@@ -16,8 +16,11 @@ const EditorPage = () => {
   const updatePost = useUpdatePost();
 
   // State quản lý Toast
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const showToast = (message: string, type: 'success' | 'error' = 'success') => setToast({ message, type });
+  const [toast, setToast] = useState<{ message: string | null; type: 'success' | 'error' | null }>({ message: null, type: null });
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast({ message: null, type: null }), 3000);
+  };
 
   const [formData, setFormData] = useState({
     title: '', excerpt: '', slug: '', content: '',
@@ -31,6 +34,10 @@ const EditorPage = () => {
   const [previewUrl, setPreviewUrl] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+
+  // Separate cache for HTML and Markdown content
+  const [htmlCache, setHtmlCache] = useState({ content: '', toc: '' });
+  const [markdownCache, setMarkdownCache] = useState({ content: '', toc: '' });
 
   useEffect(() => {
     if (id) {
@@ -60,41 +67,56 @@ const EditorPage = () => {
     }
   }, [id, navigate]);
 
-  const slugify = (str: string) => {
-    if (!str) return '';
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-      .toLowerCase().trim().replace(/[^\w\s-]/g, '')
-      .replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
-  };
-
   const importMarkdown = async () => {
-    if (!githubLink) return showToast("Vui lòng dán link GitHub .md", "error");
+    if (!githubLink) return showToast("Vui lòng dán link Markdown (.md)", "error");
     setIsImporting(true);
 
-    // Chuyển đổi link GitHub sang link Raw để fetch nội dung
-    const rawUrl = githubLink.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
-    const basePath = githubLink.substring(0, githubLink.lastIndexOf('/') + 1);
+    const isGithub = githubLink.includes('github.com');
+    let rawUrl = githubLink;
+    let basePath = '';
+
+    // GitHub-specific: Convert to raw URL and get base path for relative images
+    if (isGithub) {
+      rawUrl = githubLink.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+      basePath = githubLink.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+      basePath = basePath.substring(0, basePath.lastIndexOf('/') + 1);
+    }
 
     try {
       let markdownText = await postService.importFromUrl(rawUrl);
 
-      // 1. Xử lý đường dẫn ảnh nội bộ (Relative paths) sang link GitHub Raw
-      markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (_: string, alt: string, path: string) => {
-        const cleanPath = path.replace(/^\.\//, '');
-        return `![${alt}](${basePath}${cleanPath}?raw=true)`;
-      });
+      // GitHub-specific: Convert relative image paths to GitHub Raw URLs
+      if (isGithub) {
+        markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (_: string, alt: string, path: string) => {
+          const cleanPath = path.replace(/^\.\//, '');
+          return `![${alt}](${basePath}${cleanPath}?raw=true)`;
+        });
+      }
 
-      // 2. Đồng bộ hóa các Anchor link trong mục lục (Tùy chọn)
+      // Common: Slugify anchor links in TOC
       markdownText = markdownText.replace(/\[([^\]]+)\]\(#([^\)]+)\)/g, (_: string, text: string, anchor: string) => {
         return `[${text}](#${slugify(anchor)})`;
       });
 
-      /* ĐÃ LOẠI BỎ: Bước tự động thêm {#id} vào sau tiêu đề (headings).
-      Nội dung các thẻ như ## **1. TỔNG QUAN...** sẽ giữ nguyên định dạng Markdown gốc.
-      */
+      // Extract TOC: from "## Mục lục" to first "---"
+      let extractedToc = '';
+      const tocMatch = markdownText.match(/##\s*Mục lục[\s\S]*?(?=\n---)/i);
+      if (tocMatch) {
+        // Filter TOC to only keep level 1-2 items (remove level 3+ with 4+ spaces indent)
+        const tocLines = tocMatch[0].split('\n');
+        const filteredToc = tocLines.filter(line => {
+          // Keep header line (## Mục lục) and lines with less than 4 leading spaces
+          if (line.match(/^##\s*Mục lục/i)) return true;
+          // Count leading spaces - keep lines with 0-3 spaces (level 1-2)
+          const leadingSpaces = line.match(/^(\s*)/)?.[1]?.length || 0;
+          return leadingSpaces < 4;
+        });
+        extractedToc = filteredToc.join('\n').trim();
+        // Remove TOC section and the following "---" from main content
+        markdownText = markdownText.replace(/##\s*Mục lục[\s\S]*?\n---\n?/i, '').trim();
+      }
 
-      setFormData(prev => ({ ...prev, content: markdownText, type: 'markdown' }));
+      setFormData(prev => ({ ...prev, content: markdownText, toc: extractedToc, type: 'markdown' }));
       showToast("Nhập Markdown thành công!", "success");
     } catch (error: any) {
       showToast("Lỗi Import: " + error.message, "error");
@@ -113,6 +135,8 @@ const EditorPage = () => {
         const typedKey = key as keyof typeof formData;
         let value = formData[typedKey];
         if (key === 'is_featured') value = formData[typedKey] ? 1 : 0;
+        // Send empty TOC for HTML type
+        if (key === 'toc' && formData.type === 'html') value = '';
         if (value !== null && value !== undefined) data.append(key, String(value));
       }
     });
@@ -139,10 +163,14 @@ const EditorPage = () => {
 
   return (
     <div className="editor-container animate-fade">
-      {/* Hiển thị Toast nếu có message */}
-      {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)}
-        />
+      {/* Toast UI - same style as CategoryManager */}
+      {toast.message && (
+        <div className="toast-container">
+          <div className={`toast toast-${toast.type}`}>
+            {toast.type === 'success' ? <CheckCircle size={20} /> : <XCircle size={20} />}
+            <span>{toast.message}</span>
+          </div>
+        </div>
       )}
 
       <form onSubmit={handleSave}>
@@ -166,10 +194,26 @@ const EditorPage = () => {
           </div>
           <div className="form-group">
             <label className="form-label">ĐỊNH DẠNG NỘI DUNG</label>
-            <select className="form-select" value={formData.type} onChange={e => setFormData({
-              ...formData, type:
-                e.target.value
-            })}>
+            <select className="form-select" value={formData.type} onChange={e => {
+              const newType = e.target.value;
+              const currentType = formData.type;
+
+              // Save current content to cache before switching
+              if (currentType === 'html') {
+                setHtmlCache({ content: formData.content, toc: formData.toc });
+              } else {
+                setMarkdownCache({ content: formData.content, toc: formData.toc });
+              }
+
+              // Restore content from cache of new type
+              const cache = newType === 'html' ? htmlCache : markdownCache;
+              setFormData({
+                ...formData,
+                type: newType,
+                content: cache.content,
+                toc: cache.toc
+              });
+            }}>
               <option value="html">HTML</option>
               <option value="markdown">Markdown</option>
             </select>
@@ -205,13 +249,13 @@ const EditorPage = () => {
           )}
         </div>
 
-        {/* BOX IMPORT GITHUB */}
+        {/* BOX IMPORT MARKDOWN */}
         <div className="import-github-card">
           <label className="form-label mini">
-            <Github size={14} className="inline mr-1" /> IMPORT TỪ GITHUB
+            <Link size={14} className="inline mr-1" /> IMPORT TỪ URL
           </label>
           <div className="import-controls">
-            <input type="text" className="form-input" placeholder="Paste GitHub .md link..." value={githubLink}
+            <input type="text" className="form-input" placeholder="Paste Markdown link (GitHub, raw URL, etc.)" value={githubLink}
               onChange={e => setGithubLink(e.target.value)} />
             <button type="button" onClick={importMarkdown} disabled={isImporting} className="btn-import">
               {isImporting ?
@@ -283,14 +327,17 @@ const EditorPage = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">MỤC LỤC (TOC)</label>
-          <textarea
-            className="form-textarea toc-editor"
-            value={formData.toc}
-            onChange={e => setFormData({ ...formData, toc: e.target.value })}
-          />
-        </div>
+        {/* TOC field - only show for Markdown type */}
+        {formData.type === 'markdown' && (
+          <div className="form-group">
+            <label className="form-label">MỤC LỤC (TOC)</label>
+            <textarea
+              className="form-textarea toc-editor"
+              value={formData.toc}
+              onChange={e => setFormData({ ...formData, toc: e.target.value })}
+            />
+          </div>
+        )}
 
         <button type="submit" className="btn-save-post" disabled={isSaving}>
           {isSaving ?
