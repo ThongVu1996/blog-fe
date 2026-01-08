@@ -56,4 +56,19 @@ export const postService = {
     delete: async (id: number | string): Promise<void> => {
         await api.delete(`/posts/${id}`);
     },
+
+    /**
+     * Import content from external URL (e.g. GitHub Raw)
+     * Uses direct axios to avoid baseURL prefix
+     */
+    importFromUrl: async (url: string): Promise<string> => {
+        // Import axios dynamically or usage specific import to bypass default api instance settings
+        const axios = require('axios');
+        const response = await axios.get(url);
+        let content = response.data;
+        if (typeof content !== 'string') {
+            content = JSON.stringify(content);
+        }
+        return content;
+    }
 };

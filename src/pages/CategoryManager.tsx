@@ -3,8 +3,8 @@ import {
   Edit2, Trash2, Save, X, Loader2,
   AlertTriangle, CheckCircle, XCircle
 } from 'lucide-react';
-import { API_BASE_URL, STORAGE_KEY } from '../config/constants';
 import { useCategories } from '../hooks';
+import { categoryService } from '../services/category.service';
 
 const CategoryManager = () => {
   // Get categories from React Query
@@ -27,54 +27,43 @@ const CategoryManager = () => {
     setTimeout(() => setToast({ message: null, type: null }), 3000);
   };
 
+
+
+  // ... (existing imports)
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!catName.trim()) return;
     setIsSaving(true);
 
-    const method = editingId ? 'PUT' : 'POST';
-    const url = editingId ? `${API_BASE_URL}/categories/${editingId}` : `${API_BASE_URL}/categories`;
-
     try {
-      const res = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEY)}`
-        },
-        body: JSON.stringify({ name: catName })
-      });
-
-      if (res.ok) {
-        showToast(editingId ? "Cập nhật thành công!" : "Thêm mới thành công!", "success");
-        setCatName('');
-        setEditingId(null);
-        fetchCategories();
+      if (editingId) {
+        await categoryService.update(editingId, catName);
+        showToast("Cập nhật thành công!", "success");
       } else {
-        showToast("Thao tác thất bại.", "error");
+        await categoryService.create(catName);
+        showToast("Thêm mới thành công!", "success");
       }
-    } catch (err) {
-      showToast("Lỗi kết nối máy chủ.", "error");
+      setCatName('');
+      setEditingId(null);
+      fetchCategories();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.message, "error");
     } finally {
       setIsSaving(false);
     }
   };
 
   const handleDelete = async () => {
+    if (!showDeleteModal) return;
     try {
-      const res = await fetch(`${API_BASE_URL}/categories/${showDeleteModal}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEY)}` }
-      });
-
-      if (res.ok) {
-        showToast("Xóa chuyên mục thành công.", "success");
-        fetchCategories();
-      } else {
-        showToast("Không thể xóa chuyên mục này.", "error");
-      }
-    } catch (err) {
-      showToast("Lỗi kết nối mạng.", "error");
+      await categoryService.delete(showDeleteModal);
+      showToast("Xóa chuyên mục thành công.", "success");
+      fetchCategories();
+    } catch (err: any) {
+      console.error(err);
+      showToast(err.message, "error");
     } finally {
       setShowDeleteModal(null);
     }

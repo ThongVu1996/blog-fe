@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
-import { API_BASE_URL, STORAGE_KEY, getImageUrl } from '../config/constants';
+import { getImageUrl } from '../config/constants';
 import Toast from '../components/Toast';
 import { useCategories } from '../hooks';
+import { postService } from '../services/post.service';
 
 const EditorPage = () => {
   const { id } = useParams();
@@ -31,23 +32,20 @@ const EditorPage = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`${API_BASE_URL}/posts/${id}`)
-        .then(res => {
-          if (!res.ok) {
-            throw new Error(`Failed to fetch post: ${res.status}`);
-          }
-          return res.json();
-        })
-        .then(result => {
-          if (!result.data) {
+      postService.getById(id)
+        .then(data => {
+          if (!data) {
             throw new Error('Invalid response: missing data');
           }
-          const data = result.data;
           setFormData({
             ...data,
+            excerpt: data.excerpt || '',
+            author: data.author || '',
+            toc: data.toc || '',
             is_featured: Boolean(data.is_featured),
-            featured_order: data.featured_order || '',
-            status: data.status || 'published'
+            featured_order: data.featured_order ? String(data.featured_order) : '',
+            status: data.status || 'published',
+            image: null
           });
           if (data.image) setPreviewUrl(getImageUrl(data.image));
         })
@@ -77,19 +75,16 @@ const EditorPage = () => {
     const basePath = githubLink.substring(0, githubLink.lastIndexOf('/') + 1);
 
     try {
-      const response = await fetch(rawUrl);
-      if (!response.ok) throw new Error("Không thể tải file.");
-      let markdownText = await response.text();
+      let markdownText = await postService.importFromUrl(rawUrl);
 
       // 1. Xử lý đường dẫn ảnh nội bộ (Relative paths) sang link GitHub Raw
-      markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (_, alt, path) => {
+      markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (_: string, alt: string, path: string) => {
         const cleanPath = path.replace(/^\.\//, '');
         return `![${alt}](${basePath}${cleanPath}?raw=true)`;
       });
 
       // 2. Đồng bộ hóa các Anchor link trong mục lục (Tùy chọn)
-      // Nếu bạn muốn giữ nguyên 100% gốc không qua slugify, có thể comment đoạn này
-      markdownText = markdownText.replace(/\[([^\]]+)\]\(#([^\)]+)\)/g, (_, text, anchor) => {
+      markdownText = markdownText.replace(/\[([^\]]+)\]\(#([^\)]+)\)/g, (_: string, text: string, anchor: string) => {
         return `[${text}](#${slugify(anchor)})`;
       });
 
@@ -124,19 +119,17 @@ const EditorPage = () => {
     if (id) data.append('_method', 'PUT');
 
     try {
-      const res = await fetch(id ? `${API_BASE_URL}/posts/${id}` : `${API_BASE_URL}/posts`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEY)}` },
-        body: data
-      });
-      if (res.ok) {
-        showToast("Lưu bài viết thành công!");
-        setTimeout(() => navigate('/'), 1000);
+      if (id) {
+        await postService.update(id, data);
+        showToast("Cập nhật bài viết thành công!");
       } else {
-        showToast("Lỗi server khi lưu.", "error");
+        await postService.create(data);
+        showToast("Lưu bài viết mới thành công!");
       }
-    } catch (e) {
-      showToast("Lỗi kết nối mạng.", "error");
+      setTimeout(() => navigate('/'), 1000);
+    } catch (e: any) {
+      console.error(e);
+      showToast(e.message, "error");
     } finally {
       setIsSaving(false);
     }

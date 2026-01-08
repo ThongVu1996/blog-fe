@@ -35,7 +35,11 @@ api.interceptors.response.use(
                 window.location.href = '/login';
             }
         }
-        return Promise.reject(error);
+
+        // Normalize error message
+        const message = error.response?.data?.message || error.message || "Đã xảy ra lỗi không xác định";
+        // Reject with a clean Error object containing the message
+        return Promise.reject(new Error(message));
     }
 );
 
