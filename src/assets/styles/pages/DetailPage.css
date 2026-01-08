@@ -185,8 +185,9 @@
 }
 
 .markdown-body table {
-    display: table;
-    width: 100%;
+    display: table !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
     border-collapse: collapse;
     background-color: var(--bg-darker) !important;
     /* Removed margin and border-radius from table as wrapper handles it */
