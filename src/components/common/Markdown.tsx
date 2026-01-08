@@ -28,6 +28,13 @@ const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, 
             </code>
           );
         },
+        table({ children, ...props }: any) {
+          return (
+            <div className="table-wrapper">
+              <table {...props}>{children}</table>
+            </div>
+          );
+        },
       }}
       >
         {content}
