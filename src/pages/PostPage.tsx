@@ -1,16 +1,39 @@
 import { useParams } from 'react-router-dom';
 import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
 import PostCard from '../components/features/PostCard';
-import { usePosts } from '../hooks';
+import { usePosts, useCategories } from '../hooks';
 
-const CategoryPage = () => {
-  const { id } = useParams();
-  const { data: posts = [], isLoading } = usePosts({ category_id: id });
+// Helper to slugify for comparison
+const slugify = (str: string) => {
+  if (!str) return '';
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .toLowerCase().trim().replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+};
 
-  if (isLoading) return (
+const PostPage = () => {
+  const { slug } = useParams();
+  const { data: categories = [], isLoading: isCatsLoading } = useCategories();
+
+  // Resolve Category ID from Slug
+  const currentCategory = categories.find(c => slugify(c.name) === slug);
+  const categoryId = currentCategory?.id;
+
+  const { data: posts = [], isLoading: isPostsLoading } = usePosts({ category_id: categoryId });
+
+  const isLoading = isCatsLoading || (categoryId && isPostsLoading);
+
+  if (isLoading && !isPostsLoading) return (
     <div className="loader-full">
       <Loader2 className="spin-icon" size={48} />
-      <p>Đang kết nối trạm vũ trụ...</p>
+      <p>Đang định vị tọa độ không gian...</p>
+    </div>
+  );
+
+  if (!isCatsLoading && !currentCategory) return (
+    <div className="category-container no-data">
+      <p>Không tìm thấy vùng không gian này (Category not found).</p>
     </div>
   );
 
@@ -18,18 +41,20 @@ const CategoryPage = () => {
     <div className="category-container">
       {/* Tiêu đề phần Tất cả bài viết */}
       <div className="section-header">
-        <h2 className="glitch-title">TẤT CẢ BÀI VIẾT</h2>
+        <h2 className="glitch-title">
+          {currentCategory?.name.toUpperCase()}
+        </h2>
         <div className="title-underline"></div>
       </div>
 
       <div className="post-grid-aerospace">
-        {posts.map((p, index) => (
+        {posts?.map((p: any, index: number) => (
           // Truyền index để tạo hiệu ứng màu viền khác nhau (Cyan, Purple, Blue)
           <PostCard key={p.id} post={p} index={index} />
         ))}
       </div>
 
-      {posts.length === 0 && (
+      {posts.length === 0 && !isPostsLoading && (
         <div className="no-data">
           <p>Chưa có dữ liệu bài viết trong vùng không gian này.</p>
         </div>
@@ -54,4 +79,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default PostPage;

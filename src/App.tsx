@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
-import CategoryPage from './pages/CategoryPage';
+import PostPage from './pages/PostPage';
 import DetailPage from './pages/DetailPage';
 import LoginPage from './pages/LoginPage';
 import EditorPage from './pages/EditorPage';
@@ -23,7 +23,7 @@ const App = () => {
       <main className="main-container">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/category/:id" element={<CategoryPage />} />
+          <Route path="/posts/category/:slug" element={<PostPage />} />
           <Route path="/posts/:slug" element={<DetailPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/editor" element={<EditorPage />} />

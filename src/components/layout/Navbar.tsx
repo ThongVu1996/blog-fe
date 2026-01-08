@@ -44,16 +44,23 @@ const Navbar = () => {
 
         <div id="main-navigation" className={`nav-menu ${isOpen ? 'is-open' : ''}`}>
           <div className="nav-links">
-            {categories.map((cat) => (
-              <div
-                key={cat.id}
-                onClick={() => navigate(`/category/${cat.id}`)}
-                className="nav-link"
-                style={{ cursor: 'pointer' }}
-              >
-                {cat.name}
-              </div>
-            ))}
+            {categories.map((cat) => {
+              const slug = cat.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+                .toLowerCase().trim().replace(/[^\w\s-]/g, '')
+                .replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
+
+              return (
+                <div
+                  key={cat.id}
+                  onClick={() => navigate(`/posts/category/${slug}`)}
+                  className="nav-link"
+                  style={{ cursor: 'pointer' }}
+                >
+                  {cat.name}
+                </div>
+              );
+            })}
             <div onClick={() => navigate('/about')} className="nav-link" style={{ cursor: 'pointer' }}>About</div>
           </div>
 
