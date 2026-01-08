@@ -14,18 +14,27 @@
 
 .navbar {
   display: flex;
-  background: rgba(5, 7, 10, 0.8);
-  backdrop-filter: blur(12px);
+  /* Glassmorphism Background: Dark & Transparent */
+  background: rgba(5, 7, 10, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   padding: 0 5%;
-  height: 70px;
+  height: 80px;
+  /* Tăng chiều cao lên 80px cho thoáng */
   z-index: 1000;
-  border-bottom: 1px solid var(--border);
+
+  /* Neon Border Bottom */
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
   scrollbar-gutter: stable;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .nav-content {
@@ -90,12 +99,17 @@
   font-size: 0.95rem;
   padding: 8px 16px;
   border-radius: 10px;
-  transition: 0.2s;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .nav-link:hover {
   color: var(--primary);
-  background: rgba(79, 70, 229, 0.05);
+  /* Cyan */
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+  /* Glowing Text */
+  background: rgba(56, 189, 248, 0.05);
+  /* Subtle cyan bg */
 }
 
 .nav-auth-group {

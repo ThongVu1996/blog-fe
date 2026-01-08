@@ -76,22 +76,17 @@ h6 {
 .border-gradient {
   position: relative;
   border-radius: 16px;
-  border: 2px solid transparent;
-  background:
-    linear-gradient(var(--bg-panel), var(--bg-panel)) padding-box,
-    linear-gradient(135deg, var(--primary), var(--secondary)) border-box;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  border: 1px solid var(--border);
 }
 
 
 
 /* --- Hiệu ứng Hover (Simplified) --- */
 .border-gradient:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(122, 162, 247, 0.3);
-  filter: brightness(1.1);
+  filter: brightness(1) contrast(1);
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+  transform: translateY(-5px);
 }
 
 /* Custom scrollbars */
