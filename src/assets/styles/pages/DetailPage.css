@@ -348,3 +348,54 @@
         padding: 30px;
     }
 }
+
+/* ==========================================================================
+   9. SCROLL TO TOP BUTTON
+   ========================================================================== */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(122, 162, 247, 0.3);
+    transition: all 0.3s ease;
+    z-index: 999;
+    animation: fadeInUp 0.3s ease;
+}
+
+.scroll-to-top-btn:hover {
+    background: var(--primary);
+    color: var(--bg-darker);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(122, 162, 247, 0.5);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-to-top-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+    }
+}

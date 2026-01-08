@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  ChevronLeft, Edit, Trash2, CheckCircle, XCircle
+  ChevronLeft, Edit, Trash2, CheckCircle, XCircle, ArrowUp
 } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
 import Markdown from '../components/common/Markdown';
@@ -20,6 +20,7 @@ const DetailPage = () => {
   const deleteMutation = useDeletePost();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // State quản lý Toast: { message: string, type: 'success' | 'error' | null }
   const [toast, setToast] = useState<{ message: string | null; type: 'success' | 'error' | null }>({ message: null, type: null });
@@ -62,6 +63,19 @@ const DetailPage = () => {
       document.body.style.overflow = 'unset';
     };
   }, [showDeleteModal]);
+
+  // Show/hide scroll-to-top button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Hàm hiển thị Toast và tự đóng sau 3s
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -158,6 +172,17 @@ const DetailPage = () => {
           isLoading={deleteMutation.isPending}
           type="danger"
         />
+      )}
+
+      {/* Back to top button */}
+      {showScrollTop && (
+        <button
+          className="scroll-to-top-btn"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </button>
       )}
     </div>
   );
