@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Loader2 } from 'lucide-react';
-import { API_BASE_URL, STORAGE_KEY } from '../config/constants';
-import { LoginPageProps } from '../types';
+import { authService } from '../services';
+import { useAuthStore } from '../stores';
 
-const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+  const { login } = useAuthStore();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,22 +19,12 @@ const LoginPage = ({ onLoginSuccess }: LoginPageProps) => {
     setError('');
 
     try {
-      const res = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const result = await res.json();
-      if (result.status_code === 200) {
-        localStorage.setItem(STORAGE_KEY, result.data.access_token);
-        onLoginSuccess();
-        navigate('/');
-      } else {
-        setError('Email or password is incorrect.');
-      }
-    } catch (err) {
+      const result = await authService.login(email, password);
+      login(result.user);
+      navigate('/');
+    } catch (err: any) {
       console.error("Lỗi thực thi:", err);
-      setError('Network error. Please try again.');
+      setError(err.response?.data?.message || 'Email or password is incorrect.');
     } finally {
       setLoading(false);
     }

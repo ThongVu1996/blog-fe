@@ -1,35 +1,33 @@
 import { useState } from 'react';
-import { 
-  Edit2, Trash2, Save, X, Loader2, 
-  AlertTriangle, CheckCircle, XCircle 
+import {
+  Edit2, Trash2, Save, X, Loader2,
+  AlertTriangle, CheckCircle, XCircle
 } from 'lucide-react';
 import { API_BASE_URL, STORAGE_KEY } from '../config/constants';
+import { useCategories } from '../hooks';
 
-const CategoryManager = ({setCategories, categories}) => {
-  const [loading, setLoading] = useState(false);
-  
+const CategoryManager = () => {
+  // Get categories from React Query
+  const { data: categories = [], refetch: refetchCategories, isLoading } = useCategories();
+
   const [catName, setCatName] = useState('');
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const [showDeleteModal, setShowDeleteModal] = useState(null);
-  const [toast, setToast] = useState({ message: null, type: null });
+  const [showDeleteModal, setShowDeleteModal] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ message: string | null; type: 'success' | 'error' | null }>({ message: null, type: null });
 
   const fetchCategories = () => {
-    fetch(`${API_BASE_URL}/categories`)
-      .then(res => res.json())
-      .then(result => {
-        setCategories(result.data || []);
-        setLoading(false);
-      });
+    // Use refetch from React Query instead of manual fetch
+    refetchCategories();
   };
 
-  const showToast = (message, type) => {
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast({ message: null, type: null }), 3000);
   };
 
-  const handleSave = async (e) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!catName.trim()) return;
     setIsSaving(true);
@@ -82,12 +80,12 @@ const CategoryManager = ({setCategories, categories}) => {
     }
   };
 
-  const startEdit = (cat) => {
+  const startEdit = (cat: { id: number; name: string }) => {
     setEditingId(cat.id);
     setCatName(cat.name);
   };
 
-  if (loading) return (
+  if (isLoading) return (
     <div className="loader-container">
       <Loader2 className="spin" size={48} />
     </div>
@@ -111,7 +109,7 @@ const CategoryManager = ({setCategories, categories}) => {
           {editingId ? "Edit Category" : "Add New Category"}
         </h3>
         <div className="form-group">
-          <input 
+          <input
             className="form-input"
             value={catName}
             onChange={(e) => setCatName(e.target.value)}
@@ -119,14 +117,14 @@ const CategoryManager = ({setCategories, categories}) => {
             required
           />
         </div>
-        
+
         <div className="category-form-actions">
           <button className="btn-primary" disabled={isSaving}>
             {isSaving ? <Loader2 className="spin" size={16} /> : <Save size={16} />}
             <span>{editingId ? "Update" : "Save"}</span>
           </button>
           {editingId && (
-            <button className="btn-outline" type="button" onClick={() => {setEditingId(null); setCatName('');}}>
+            <button className="btn-outline" type="button" onClick={() => { setEditingId(null); setCatName(''); }}>
               <X size={16} /> <span>Cancel</span>
             </button>
           )}
@@ -149,16 +147,16 @@ const CategoryManager = ({setCategories, categories}) => {
                 <td className="category-action-cell">
                   <div className="category-action-group">
                     {
-                        cat.id != 1 ? <>
+                      cat.id != 1 ? <>
                         <button className="btn-table-action" onClick={() => startEdit(cat)}>
-                      <Edit2 size={14} /> Edit
-                    </button>
-                    <button className="btn-table-action btn-table-delete" onClick={() => setShowDeleteModal(cat.id)}>
-                      <Trash2 size={14} /> Delete
-                    </button>
-                        </> :  null
+                          <Edit2 size={14} /> Edit
+                        </button>
+                        <button className="btn-table-action btn-table-delete" onClick={() => setShowDeleteModal(cat.id)}>
+                          <Trash2 size={14} /> Delete
+                        </button>
+                      </> : null
                     }
-              
+
                   </div>
                 </td>
               </tr>

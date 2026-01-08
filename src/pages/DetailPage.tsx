@@ -4,43 +4,36 @@ import {
   ChevronLeft, Edit, Trash2, Loader2,
   AlertTriangle, CheckCircle, XCircle
 } from 'lucide-react';
-import { API_BASE_URL, getImageUrl, STORAGE_KEY } from '../config/constants';
+import { getImageUrl } from '../config/constants';
 import Markdown from '../components/Markdown';
 import { useRef } from 'react';
 import CustomModal from '../components/CustomModal';
+import { usePostBySlug, useDeletePost } from '../hooks';
+import { useAuthStore } from '../stores';
 
-const DetailPage = ({ isLoggedIn }) => {
-  const { slug } = useParams();
+const DetailPage = () => {
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { isLoggedIn } = useAuthStore();
+  const { data: post, isLoading } = usePostBySlug(slug || '');
+  const deleteMutation = useDeletePost();
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   // State quản lý Toast: { message: string, type: 'success' | 'error' | null }
-  const [toast, setToast] = useState({ message: null, type: null });
+  const [toast, setToast] = useState<{ message: string | null; type: 'success' | 'error' | null }>({ message: null, type: null });
 
-  const tocRef = useRef(null);
-  const handleOnClick = (e) => {
-    const targetLink = e.target.closest('a');
+  const tocRef = useRef<HTMLDivElement>(null);
+  const handleOnClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const targetLink = (e.target as HTMLElement).closest('a');
     if (!targetLink || !targetLink.getAttribute('href')?.startsWith('#')) return;
     if (tocRef.current) {
       const allLinks = tocRef.current.querySelectorAll('a');
-      allLinks.forEach(link => link.classList.remove('active-toc'));
+      allLinks.forEach((link: Element) => link.classList.remove('active-toc'));
     }
     targetLink.classList.add('active-toc');
   };
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/posts/detail/${slug}`)
-      .then(res => res.json())
-      .then(result => {
-        setPost(result.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [slug]);
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -54,7 +47,7 @@ const DetailPage = ({ isLoggedIn }) => {
   }, [showDeleteModal]);
 
   // Hàm hiển thị Toast và tự đóng sau 3s
-  const showToast = (message, type) => {
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
     setTimeout(() => {
       setToast({ message: null, type: null });
@@ -62,37 +55,28 @@ const DetailPage = ({ isLoggedIn }) => {
   };
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/posts/${post.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem(STORAGE_KEY)}`
-        }
-      });
+    if (!post) return;
 
-      if (res.ok) {
-        showToast("Delete Post Successfully", "success");
-        setTimeout(() => {
-          navigate('/');
-        }, 500);
-      } else {
-        const result = await res.json();
-        showToast(result.message || "Delete Post Failed", "error");
-      }
+    try {
+      await deleteMutation.mutateAsync(post.id);
+      showToast("Delete Post Successfully", "success");
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
     } catch (error) {
-      showToast(`${error} || Network error. Please try again later.`, "error");
+      showToast("Delete Post Failed", "error");
     } finally {
-      setIsDeleting(false);
       setShowDeleteModal(false);
     }
   };
 
-  if (loading) return (
+  if (isLoading) return (
     <div className="loader-container">
       <Loader2 className="spin" size={48} />
     </div>
   );
+
+  if (!post) return <div className="loader-container">Không tìm thấy bài viết</div>;
 
   return (
     <div className="detail-view animate-fade">
@@ -142,7 +126,7 @@ const DetailPage = ({ isLoggedIn }) => {
         post.type == 'html' ?
           <div className="detail-content" dangerouslySetInnerHTML={{ __html: post.content }} /> : <div
             className='mask-origin-content'>
-            <Markdown content={post.toc} ref={tocRef} onClick={handleOnClick} />
+            {post.toc && <Markdown content={post.toc} ref={tocRef} onClick={handleOnClick} />}
             <Markdown content={post.content} />
           </div>
       }
@@ -158,7 +142,7 @@ const DetailPage = ({ isLoggedIn }) => {
             </>
           }
           confirmText="Xác nhận xóa"
-          isLoading={isDeleting}
+          isLoading={deleteMutation.isPending}
           type="danger"
         />
       )}

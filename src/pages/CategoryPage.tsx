@@ -1,28 +1,13 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
 import PostCard from './PostCard';
-import { API_BASE_URL } from '../config/constants';
-import { CategoryPageProps, Post } from '../types';
+import { usePosts } from '../hooks';
 
-const CategoryPage = ({ categories }: CategoryPageProps) => {
+const CategoryPage = () => {
   const { id } = useParams();
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: posts = [], isLoading } = usePosts({ category_id: id });
 
-  useEffect(() => {
-    setLoading(true);
-    // Fetch dữ liệu dựa trên category id
-    fetch(`${API_BASE_URL}/posts?category_id=${id}`)
-      .then(res => res.json())
-      .then(result => {
-        setPosts(result.data || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [id]);
-
-  if (loading) return (
+  if (isLoading) return (
     <div className="loader-full">
       <Loader2 className="spin-icon" size={48} />
       <p>Đang kết nối trạm vũ trụ...</p>

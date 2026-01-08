@@ -1,24 +1,12 @@
-import React, { useState, useEffect } from 'react';
 import { Loader2, TrendingUp, Mail } from 'lucide-react';
 import PostCard from './PostCard';
-import { API_BASE_URL } from '../config/constants';
 import { Link } from 'react-router-dom';
+import { usePosts } from '../hooks';
 
 const HomePage = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: posts = [], isLoading } = usePosts();
 
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/posts`)
-      .then(res => res.json())
-      .then(result => {
-        setPosts(result.data || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) return (
+  if (isLoading) return (
     <div className="loader-container">
       <Loader2 className="spin" size={56} />
       <p>Đang tải dữ liệu kĩ thuật...</p>

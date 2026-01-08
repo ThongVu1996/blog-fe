@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AboutPage = () => (
   <div className="animate-fade container" style={{ paddingTop: '80px', textAlign: 'center' }}>
     <h1>About Me</h1>

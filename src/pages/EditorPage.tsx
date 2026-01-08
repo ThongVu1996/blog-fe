@@ -2,15 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Save, Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
 import { API_BASE_URL, STORAGE_KEY, getImageUrl } from '../config/constants';
-import Toast from '../components/Toast'; // Import component Toast mới
+import Toast from '../components/Toast';
+import { useCategories } from '../hooks';
 
-const EditorPage = ({ categories }) => {
+const EditorPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // Get categories from React Query instead of props
+  const { data: categories = [] } = useCategories();
+
   // State quản lý Toast
-  const [toast, setToast] = useState(null);
-  const showToast = (message, type = 'success') => setToast({ message, type });
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => setToast({ message, type });
 
   const [formData, setFormData] = useState({
     title: '', excerpt: '', slug: '', content: '',
@@ -20,7 +24,7 @@ const EditorPage = ({ categories }) => {
   });
 
   const [githubLink, setGithubLink] = useState('');
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -42,7 +46,7 @@ const EditorPage = ({ categories }) => {
     }
   }, [id]);
 
-  const slugify = (str) => {
+  const slugify = (str: string) => {
     if (!str) return '';
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/đ/g, 'd').replace(/Đ/g, 'D')
@@ -81,22 +85,24 @@ const EditorPage = ({ categories }) => {
 
       setFormData(prev => ({ ...prev, content: markdownText, type: 'markdown' }));
       showToast("Nhập Markdown thành công!", "success");
-    } catch (error) {
+    } catch (error: any) {
       showToast("Lỗi Import: " + error.message, "error");
     } finally {
       setIsImporting(false);
     }
   };
-  const handleSave = async (e) => {
+
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSaving(true);
     const data = new FormData();
 
     Object.keys(formData).forEach(key => {
       if (key !== 'image') {
-        let value = formData[key];
-        if (key === 'is_featured') value = formData[key] ? 1 : 0;
-        if (value !== null && value !== undefined) data.append(key, value);
+        const typedKey = key as keyof typeof formData;
+        let value = formData[typedKey];
+        if (key === 'is_featured') value = formData[typedKey] ? 1 : 0;
+        if (value !== null && value !== undefined) data.append(key, String(value));
       }
     });
 
@@ -253,7 +259,7 @@ const EditorPage = ({ categories }) => {
               </div>}
           </div>
           <input type="file" accept="image/*" onChange={e => {
-            const file = e.target.files[0];
+            const file = e.target.files?.[0];
             if (file) { setImageFile(file); setPreviewUrl(URL.createObjectURL(file)); }
           }} />
         </div>

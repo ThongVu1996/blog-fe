@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, Plus, LogIn, LogOut, Menu, X, Settings } from 'lucide-react';
-import { NavbarProps } from '../types';
+import { useAuthStore } from '../stores';
+import { useCategories } from '../hooks';
 
-const Navbar = ({ categories, isLoggedIn, onLogout }: NavbarProps) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+
+  // Get auth state from Zustand
+  const { isLoggedIn, logout } = useAuthStore();
+
+  // Get categories from React Query
+  const { data: categories = [] } = useCategories();
 
   useEffect(() => {
     setIsOpen(false);
@@ -46,7 +53,7 @@ const Navbar = ({ categories, isLoggedIn, onLogout }: NavbarProps) => {
                 <Link to="/editor" className="btn-primary">
                   <Plus size={18} /> <span>Viết bài</span>
                 </Link>
-                <button className="btn-logout" onClick={onLogout}>
+                <button className="btn-logout" onClick={logout}>
                   <LogOut size={18} />
                 </button>
               </>

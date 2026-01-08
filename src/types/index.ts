@@ -98,33 +98,6 @@ export interface ApiResponse<T> {
 // COMPONENT PROPS
 // ============================================
 
-export interface NavbarProps {
-    categories: Category[];
-    isLoggedIn: boolean;
-    onLogout: () => void;
-}
-
-export interface CategoryPageProps {
-    categories: Category[];
-}
-
-export interface DetailPageProps {
-    isLoggedIn: boolean;
-}
-
-export interface LoginPageProps {
-    onLoginSuccess: () => void;
-}
-
-export interface EditorPageProps {
-    categories: Category[];
-}
-
-export interface CategoryManagerProps {
-    categories: Category[];
-    setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
-}
-
 export interface PostCardProps {
     post: Post;
     index?: number;

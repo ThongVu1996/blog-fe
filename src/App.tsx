@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -8,46 +7,32 @@ import DetailPage from './pages/DetailPage';
 import LoginPage from './pages/LoginPage';
 import EditorPage from './pages/EditorPage';
 import AboutPage from './pages/AboutPage';
-import { API_BASE_URL, STORAGE_KEY } from './config/constants';
-import { Category, ApiResponse } from './types';
-
-import './assets/styles/index.css';
 import CategoryManager from './pages/CategoryManager';
 import SpaceBackground from './components/SpaceBackground';
+import { useAuthStore } from './stores';
+
+import './assets/styles/index.css';
 
 const App = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem(STORAGE_KEY));
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/categories`)
-      .then(res => res.json())
-      .then((result: ApiResponse<Category[]>) => setCategories(result.data || []));
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem(STORAGE_KEY);
-    setIsLoggedIn(false);
-    window.location.href = '/';
-  };
+  const { isLoggedIn } = useAuthStore();
 
   return (
     <BrowserRouter>
       <SpaceBackground />
-      <Navbar categories={categories} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <Navbar />
       <main className="container" style={{ minHeight: '80vh', width: '90%' }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/category/:id" element={<CategoryPage categories={categories} />} />
-          <Route path="/posts/:slug" element={<DetailPage isLoggedIn={isLoggedIn} />} />
-          <Route path="/login" element={<LoginPage onLoginSuccess={() => setIsLoggedIn(true)} />} />
-          <Route path="/editor" element={<EditorPage categories={categories} />} />
-          <Route path="/editor/:id" element={<EditorPage categories={categories} />} />
+          <Route path="/category/:id" element={<CategoryPage />} />
+          <Route path="/posts/:slug" element={<DetailPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/editor" element={<EditorPage />} />
+          <Route path="/editor/:id" element={<EditorPage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/manage-categories" element={isLoggedIn ? <CategoryManager setCategories={setCategories}
-            categories={categories} /> :
-            <Navigate to="/login" />
-          } />
+          <Route
+            path="/manage-categories"
+            element={isLoggedIn ? <CategoryManager /> : <Navigate to="/login" />}
+          />
         </Routes>
       </main>
       <Footer />
