@@ -1,189 +1,323 @@
 .detail-view {
-  margin: 100px auto;
-  padding: 0 16px;
+    margin: 60px auto;
+    padding: 0 20px;
+    max-width: 1400px;
 }
 
+/* ==========================================================================
+   2. HEADER & NAVIGATION
+   ========================================================================== */
 .detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.detail-actions {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .detail-back-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-main);
-  padding: 8px 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: var(--text-main);
+    font-weight: 700;
+    border-radius: 30px 5px 30px 5px;
+    transition: 0.3s;
 }
 
-.detail-banner {
-  width: 100%;
-  border-radius: var(--radius-lg);
-  max-height: 500px;
-  object-fit: cover;
-  box-shadow: var(--shadow-md);
-}
-
-.detail-title {
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
-  font-weight: 900;
-  margin: 30px 0;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+.detail-back-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(122, 162, 247, 0.3);
 }
 
 .detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 32px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 0.95rem;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 25px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
-.detail-content {
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: #374151;
+/* ==========================================================================
+   3. HERO BANNER & TITLE
+   ========================================================================== */
+.detail-banner {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    margin: 40px 0;
+    border-radius: 50% 20% / 10% 40%;
+    border: 2px solid var(--border);
+    box-shadow: var(--shadow-sharp);
+}
+
+.detail-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1.2;
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   4. MAIN LAYOUT (2 COLUMNS)
+   ========================================================================== */
+.mask-origin-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* CỘT TRÁI: MỤC LỤC (SIDEBAR STICKY) */
+.mask-origin-content > .markdown-body:nth-child(1) {
+    flex: 0 0 320px;
+    position: sticky;
+    top: 100px;
+    background: var(--bg-panel) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 30px 10px 30px 10px;
+    padding: 30px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    box-shadow: var(--shadow-sharp) !important;
+    backdrop-filter: none !important;
+}
+
+/* Reset list mục lục */
+.mask-origin-content > .markdown-body:nth-child(1) ul,
+.mask-origin-content > .markdown-body:nth-child(1) li {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.mask-origin-content > .markdown-body:nth-child(1) li {
+    margin-bottom: 6px;
+}
+
+.mask-origin-content > .markdown-body:nth-child(1) a {
+    display: block;
+    padding: 10px 15px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    transition: 0.2s;
+    border-left: 2px solid transparent;
+}
+
+.mask-origin-content > .markdown-body:nth-child(1) a:hover,
+.mask-origin-content > .markdown-body:nth-child(1) a.active-toc {
+    background: rgba(122, 162, 247, 0.15);
+    color: var(--secondary);
+    padding-left: 20px;
+    border-left: 4px solid var(--primary) !important;
+}
+
+/* CỘT PHẢI: NỘI DUNG CHÍNH */
+.mask-origin-content > .markdown-body:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+    background: var(--bg-panel) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 24px;
+    padding: 50px 60px;
+    box-shadow: var(--shadow-sharp) !important;
+    color: #e2e8f0; 
+    line-height: 1.8;
+    backdrop-filter: none !important;
+}
+
+/* ==========================================================================
+   5. MARKDOWN TYPOGRAPHY
+   ========================================================================== */
+.markdown-body h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--secondary) !important;
+    border-bottom: 2px solid var(--border) !important;
+    padding-bottom: 10px;
+    margin-top: 3rem;
+    font-weight: 800;
+}
+
+.markdown-body h3 {
+    color: var(--accent) !important;
+    margin-top: 2rem;
+}
+
+.markdown-body strong {
+    color: var(--secondary);
+    font-weight: 700;
+}
+
+.markdown-body a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ==========================================================================
+   6. COMPONENTS (TABLE, CODE, IMAGES)
+   ========================================================================== */
+
+/* TABLE STYLES */
+.markdown-body table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-darker) !important;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 30px 0;
+}
+
+.markdown-body table tr, 
+.markdown-body table td, 
+.markdown-body table th {
+    border: 1px solid var(--border) !important;
+    background: transparent !important;
+    padding: 15px;
+    color: var(--text-main);
+}
+
+.markdown-body table th {
+    background: rgba(122, 162, 247, 0.2) !important;
+    color: var(--secondary);
+}
+
+/* CODE BLOCK (SHARP CLARITY) */
+.markdown-body pre {
+    background: var(--bg-darker) !important;
+    border: 1px solid var(--primary) !important;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+    overflow-x: auto;
+}
+
+.markdown-body code {
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    color: var(--text-code) !important;
+    text-shadow: none !important; /* Chống mờ */
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Syntax Highlighting */
+.hljs-keyword, .hljs-selector-tag { color: var(--accent) !important; font-weight: bold; }
+.hljs-string  { color: #9ece6a !important; }
+.hljs-comment { color: #565f89 !important; font-style: italic; }
+.hljs-attr { color: var(--secondary) !important; }
+
+/* OPTIMIZED IMAGES */
+.markdown-body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 3rem auto;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px;
+    filter: brightness(0.8) contrast(1.1); 
+    background: rgba(13, 17, 23, 0.4);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: zoom-in;
+}
+
+.markdown-body img:hover {
+    filter: brightness(1) contrast(1);
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+/* ==========================================================================
+   7. ACTIONS (BUTTONS & TECH STACK)
+   ========================================================================== */
+.detail-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.tech-stack {
+    background: rgba(212, 175, 55, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
 
 .btn-delete {
-  background: #fee2e2;
-  color: #ef4444;
-  border: 1px solid #fecaca;
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: 0.2s;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .btn-delete:hover {
-  background: #fef2f2;
+    background-color: rgba(255, 77, 79, 0.25);
+    box-shadow: 0 0 15px rgba(255, 77, 79, 0.6), 0 0 30px rgba(255, 77, 79, 0.3);
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
+.btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 2px solid #a855f7;
+    color: #a855f7;
+    font-family: sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.modal-content {
-  background: var(--white);
-  padding: 32px;
-  border-radius: var(--radius-lg);
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  box-shadow: var(--shadow-lg);
-  animation: modalFadeIn 0.3s ease-out;
+.btn-edit:hover {
+    background-color: rgba(168, 85, 247, 0.25);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(168, 85, 247, 0.3);
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 24px;
-}
-
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.mask-origin-content {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.mask-origin-content > .markdown-body:nth-child(1) {
-  flex: 0 0 320px;
-  width: 320px;
-  position: sticky;
-  top: 100px;
-  max-height: calc(100vh - 120px);
-  overflow-y: auto;
-  background: white;
-  border-radius: 30px;
-  padding: 30px 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
-}
-
-.mask-origin-content > .markdown-body:nth-child(2) {
-  flex: 1;
-  width: calc(100% - 350px);
-  contain: inline-size;
-  overflow-anchor: none;
-  background: white;
-  border-radius: 30px;
-  padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-}
-
-.markdown-body {
-  ul {
-    list-style: none;
-    a {
-      color: black;
+/* ==========================================================================
+   8. RESPONSIVE & UTILS
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .mask-origin-content {
+        flex-direction: column;
     }
-  }
-}
-
-.markdown-body a.active-toc {
-  color: blue;
-  font-weight: 700;
-  border-left: 3px solid #7c3aed;
-  padding-left: 10px;
-  transition: all 0.2s ease;
-}
-
-@media (max-width: 992px) {
-  .mask-origin-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .mask-origin-content > .markdown-body:nth-child(1) {
-    position: unset;
-    width: 100%;
-    overflow-y: unset;
-    max-height: unset;
-  }
-
-  .mask-origin-content > .markdown-body:nth-child(2) {
-    width: 100%;
-  }
+    .mask-origin-content > .markdown-body:nth-child(1) {
+        position: static;
+        width: 100%;
+        flex: none;
+        max-height: 300px;
+        margin-bottom: 30px;
+    }
+    .mask-origin-content > .markdown-body:nth-child(2) {
+        width: 100%;
+        padding: 30px;
+    }
 }

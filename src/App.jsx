@@ -12,6 +12,7 @@ import { API_BASE_URL, STORAGE_KEY } from './config/constants';
 
 import './assets/styles/index.css';
 import CategoryManager from './pages/CategoryManager';
+import SpaceBackground from './components/SpaceBackground';
 
 const App = () => {
   const [categories, setCategories] = useState([]);
@@ -31,6 +32,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <SpaceBackground />
       <Navbar categories={categories} isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <main className="container" style={{ minHeight: '80vh', width: '90%' }}>
         <Routes>

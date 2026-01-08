@@ -7,6 +7,7 @@ import {
 import { API_BASE_URL, getImageUrl, STORAGE_KEY } from '../config/constants';
 import Markdown from '../components/Markdown';
 import { useRef } from 'react';
+import CustomModal from '../components/CustomModal';
 
 const DetailPage = ({ isLoggedIn }) => {
   const { slug } = useParams();
@@ -115,7 +116,7 @@ const DetailPage = ({ isLoggedIn }) => {
         {isLoggedIn && (
           <div className="detail-actions">
             <button onClick={() => navigate(`/editor/${post.id}`)}
-              className="btn-primary"
+              className="btn-edit"
             >
               <Edit size={16} /> Edit
             </button>
@@ -130,7 +131,7 @@ const DetailPage = ({ isLoggedIn }) => {
 
       <img src={getImageUrl(post.image)} className="detail-banner" alt={post.title} />
 
-      <h1 className="detail-title">{post.title}</h1>
+      <h1 className="detail-title glitch-title">{post.title}</h1>
 
       <div className="detail-meta">
         <span>Author: <strong>{post.author}</strong></span>
@@ -147,26 +148,19 @@ const DetailPage = ({ isLoggedIn }) => {
       }
       {/* 2. Popup xác nhận xóa bài viết */}
       {showDeleteModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <AlertTriangle size={48} color="#ef4444" style={{ margin: '0 auto 16px' }} />
-            <h3 className="modal-title">Confirm Delete?</h3>
-            <p className="modal-text">
-              Are you sure you want to delete the post <strong>"{post.title}"</strong>?
-            </p>
-            <div className="modal-buttons">
-              <button className="btn-outline" onClick={() => setShowDeleteModal(false)}
-                disabled={isDeleting}
-              >
-                Cancel
-              </button>
-              <button className="btn-delete" onClick={handleDelete} disabled={isDeleting}>
-                {isDeleting ?
-                  <Loader2 className="spin" size={16} /> : 'Confirm Delete'}
-              </button>
-            </div>
-          </div>
-        </div>
+        <CustomModal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDelete}
+          title="Xác nhận xóa?"
+          message={
+            <>
+              Bạn có chắc chắn muốn xóa bài viết <strong>"{post.title}"</strong>?
+              Hành động này sẽ xóa vĩnh viễn dữ liệu khỏi trạm lưu trữ.
+            </>
+          }
+          confirmText="Xác nhận xóa"
+          isLoading={isDeleting}
+          type="danger"
+        />
       )}
     </div>
   );

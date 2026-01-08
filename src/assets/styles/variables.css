@@ -1,13 +1,57 @@
 :root {
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --bg-body: #fafbfc;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --text-light: #9ca3af;
-  --white: #ffffff;
-  --border: #f1f5f9;
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --radius-lg: 20px;
-  --radius-md: 12px;
+  /* Màu nền & Bố cục */
+  --bg-deep: #05070a;
+  --card-bg: #0f172a;
+
+  /* Màu chữ */
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+
+  /* Palette màu Cyberpunk cho Border & Glow */
+  --cyan: #00f2ff;
+  --purple: #9d50bb;
+  --blue: #3b82f6;
+  --green: #10B981;
+
+  /* Cấu hình Font & Phụ trợ */
+  --font-primary: 'Inter', sans-serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --border-soft: rgba(255, 255, 255, 0.1);
+  --modal-bg: #111418;       /* Màu nền tối sâu hơn */
+  --danger-neon: #ff3333;    /* Đỏ neon phát sáng */
+  --info-neon: #00d1ff;      /* Xanh cyan neon */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --modal-bg: #0b0d11;         /* Màu nền Modal tối sâu hơn */
+  --danger-neon: #ff3333;      /* Đỏ Neon */
+  --info-neon: #00d1ff;        /* Cyan Neon */
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --bg-space: #05070A;
+  --bg-card: rgba(13, 17, 23, 0.8);
+  --primary: #00D1FF; /* Cyan Neon */
+  --primary-glow: rgba(0, 209, 255, 0.3);
+  --text-main: #F8FAFC; /* Trắng tuyết */
+  --text-body: #CBD5E1; /* Xám sáng dễ đọc */
+  --text-muted: #94A3B8; /* Xám Slate */
+  --border: rgba(255, 255, 255, 0.08);
+  --font-heading: 'Space Grotesk', 'Orbitron', sans-serif;
+  /* --- BẢNG MÀU CHỦ ĐẠO --- */
+  --bg-main: #1a1b26;           /* Nền chính xanh đen bão tố */
+  --bg-darker: #16161e;         /* Nền tối sâu cho Code/Table */
+  --bg-panel: #24283b;          /* Nền Panel nội dung */
+  
+  --primary: #7aa2f7;           /* Xanh dương chính */
+  --secondary: #7aa2f7;         /* Cyan sáng cho điểm nhấn */
+  --accent: #bb9af7;            /* Tím nhạt cho chữ đậm */
+  
+  /* --- MÀU CHỮ --- */
+  --text-main: #c0caf5;         /* Chữ chính: High legibility */
+  --text-code: #7aa2f7;         /* Chữ trong code */
+  --text-muted: #949ecb;        /* Chữ phụ */
+  
+  /* --- HỆ THỐNG VIỀN & BÓNG --- */
+  --border: rgba(122, 162, 247, 0.25);
+  --shadow-sharp: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
 }

@@ -1,19 +1,38 @@
 import { Link } from 'react-router-dom';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Clock, ArrowRight } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
 
 const PostCard = ({ post }) => (
-  <Link to={`/posts/${post.slug}`} className="post-card animate-fade">
-    <div className="post-img-container">
-      <img src={getImageUrl(post.image)} alt={post.title} className="post-img" />
+  <Link to={`/posts/${post.slug}`} className="news-item animate-fade border-gradient">
+    {/* Phần hình ảnh bên trái */}
+    <div className="news-item-image">
+      <img src={getImageUrl(post.image)} alt={post.title} loading="lazy" />
     </div>
-    <div className="post-info">
-      <div className="post-meta">
-        <Calendar size={12} /> {post.created_at?.split('T')[0]}
+
+    {/* Phần nội dung bên phải */}
+    <div className="news-info">
+      <span className="news-category">
+        {post.category?.name || "INFRASTRUCTURE"}
+      </span>
+
+      <h3 className="news-title">{post.title}</h3>
+
+      <p className="news-summary">
+        {post.excerpt || post.content?.substring(0, 160).replace(/[#*`]/g, '') + "..."}
+      </p>
+
+      <div className="news-footer">
+        <div className="news-meta">
+          <Clock size={14} className="meta-icon" />
+          <span>{post.created_at?.split('T')[0]}</span>
+          <span className="meta-dot">•</span>
+          <span>5 phút đọc</span>
+        </div>
+        <div className="news-read-more">
+          READ
+          <ArrowRight size={14} />
+        </div>
       </div>
-      <h3 className="post-title">{post.title}</h3>
-      <p className="post-excerpt">{post.excerpt}</p>
-      <div className="post-more">Read more <ArrowRight size={14} /></div>
     </div>
   </Link>
 );
