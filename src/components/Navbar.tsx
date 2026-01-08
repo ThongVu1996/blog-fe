@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { BookOpen, Plus, LogIn, LogOut, Menu, X, Settings } from 'lucide-react';
+import { NavbarProps } from '../types';
 
-const Navbar = ({ categories, isLoggedIn, onLogout }) => {
+const Navbar = ({ categories, isLoggedIn, onLogout }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 

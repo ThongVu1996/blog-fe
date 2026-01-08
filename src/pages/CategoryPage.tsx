@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Loader2, Calendar, Clock, ChevronRight, ChevronLeft } from 'lucide-react';
-import PostCard from './PostCard'; // Lưu ý: PostCard cần được cập nhật CSS theo bên dưới
+import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
+import PostCard from './PostCard';
 import { API_BASE_URL } from '../config/constants';
+import { CategoryPageProps, Post } from '../types';
 
-const CategoryPage = ({ categories }) => {
+const CategoryPage = ({ categories }: CategoryPageProps) => {
   const { id } = useParams();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

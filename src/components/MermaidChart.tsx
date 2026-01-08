@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
-import { uniqueId } from 'lodash';
+import { MermaidChartProps } from '../types';
 
-const MermaidChart = ({ chart }) => {
+const MermaidChart = ({ chart }: MermaidChartProps) => {
   const [svg, setSvg] = useState('');
-  const containerRef = useRef(null);
-  const chartId = useRef(`mermaid-${uniqueId()}`); // Tạo ID duy nhất cho mỗi sơ đồ
+  const containerRef = useRef<HTMLDivElement>(null);
+  const chartId = useRef(`mermaid-${Math.random().toString(36).substr(2, 9)}`);
 
   useEffect(() => {
     const renderChart = async () => {
@@ -33,11 +33,11 @@ const MermaidChart = ({ chart }) => {
   }, [chart]);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="mermaid-container"
       style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}
-      dangerouslySetInnerHTML={{ __html: svg }} 
+      dangerouslySetInnerHTML={{ __html: svg }}
     />
   );
 };

@@ -5,23 +5,25 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import MermaidChart from './MermaidChart';
+import { MarkdownProps } from '../types';
 
 import 'github-markdown-css/github-markdown-light.css';
 import 'highlight.js/styles/github.css';
 
-const Markdown = forwardRef(({ onClick = () => { }, content, className = "" }, ref) => {
+const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, className = "" }, ref) => {
   return (
     <div ref={ref} className={`${className} markdown-body`.trim()} onClick={onClick}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeHighlight, rehypeSlug]} components={{
-        code({ inline, className, children, ...props }) {
+        code(props: any) {
+          const { inline, className, children, ...rest } = props;
           const match = /language-mermaid/.exec(className || ''); if (!inline
             && match) {
-              return (<MermaidChart chart={String(children).replace(/\n$/, '')} />
-              );
+            return (<MermaidChart chart={String(children).replace(/\n$/, '')} />
+            );
           }
 
           return (
-            <code className={className} {...props}>
+            <code className={className} {...rest}>
               {children}
             </code>
           );

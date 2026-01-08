@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { AlertTriangle, Loader2, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { CustomModalProps } from '../types';
 
 const CustomModal = ({
   isOpen,
@@ -10,8 +11,8 @@ const CustomModal = ({
   message,
   confirmText = "Xác nhận",
   isLoading = false,
-  type = "danger" // 'danger' hoặc 'info'
-}) => {
+  type = "danger"
+}: CustomModalProps) => {
 
   // Khóa cuộn trang khi Modal mở
   useEffect(() => {

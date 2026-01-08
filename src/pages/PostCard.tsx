@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Clock, ArrowRight } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
+import { PostCardProps } from '../types';
 
-const PostCard = ({ post }) => (
-  <Link to={`/posts/${post.slug}`} className="news-item animate-fade border-gradient">
+const PostCard = ({ post, index }: PostCardProps) => (
+  <Link to={`/posts/${post.slug}`} className="news-item animate-fade border-gradient" style={{ animationDelay: `${(index || 0) * 0.1}s` }}>
     {/* Phần hình ảnh bên trái */}
     <div className="news-item-image">
       <img src={getImageUrl(post.image)} alt={post.title} loading="lazy" />

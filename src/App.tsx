@@ -9,19 +9,20 @@ import LoginPage from './pages/LoginPage';
 import EditorPage from './pages/EditorPage';
 import AboutPage from './pages/AboutPage';
 import { API_BASE_URL, STORAGE_KEY } from './config/constants';
+import { Category, ApiResponse } from './types';
 
 import './assets/styles/index.css';
 import CategoryManager from './pages/CategoryManager';
 import SpaceBackground from './components/SpaceBackground';
 
 const App = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem(STORAGE_KEY));
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/categories`)
       .then(res => res.json())
-      .then(result => setCategories(result.data || []));
+      .then((result: ApiResponse<Category[]>) => setCategories(result.data || []));
   }, []);
 
   const handleLogout = () => {
