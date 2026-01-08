@@ -1,23 +1,15 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
 import PostCard from '../components/features/PostCard';
 import { usePosts, useCategories } from '../hooks';
 
-// Helper to slugify for comparison
-const slugify = (str: string) => {
-  if (!str) return '';
-  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-    .toLowerCase().trim().replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
-};
-
 const PostPage = () => {
   const { slug } = useParams();
-  const { data: categories = [], isLoading: isCatsLoading } = useCategories();
 
-  // Resolve Category ID from Slug
-  const currentCategory = categories.find(c => slugify(c.name) === slug);
+  const { data: categories = [], isLoading: isCatsLoading } = useCategories();
+  const navigate = useNavigate();
+
+  const currentCategory = categories.find(c => c.name.toLowerCase() === slug);
   const categoryId = currentCategory?.id;
 
   const { data: posts = [], isLoading: isPostsLoading } = usePosts({ category_id: categoryId });
@@ -31,11 +23,7 @@ const PostPage = () => {
     </div>
   );
 
-  if (!isCatsLoading && !currentCategory) return (
-    <div className="category-container no-data">
-      <p>Không tìm thấy vùng không gian này (Category not found).</p>
-    </div>
-  );
+  if (!isCatsLoading && !currentCategory) return navigate('/404')
 
   return (
     <div className="category-container">
