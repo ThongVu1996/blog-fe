@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { CheckCircle, AlertCircle, X } from 'lucide-react';
-import { ToastProps } from '../types';
+import { ToastProps } from '../../types';
 
 const Toast = ({ message, type = 'success', onClose }: ToastProps) => {
   useEffect(() => {

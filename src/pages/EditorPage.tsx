@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
-import Toast from '../components/Toast';
+import Toast from '../components/common/Toast';
 import { useCategories, useCreatePost, useUpdatePost } from '../hooks';
 import { postService } from '../services/post.service';
 

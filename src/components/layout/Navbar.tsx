@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BookOpen, Plus, LogIn, LogOut, Menu, X, Settings } from 'lucide-react';
-import { useAuthStore } from '../stores';
-import { useCategories } from '../hooks';
+import { useAuthStore } from '../../stores';
+import { useCategories } from '../../hooks';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

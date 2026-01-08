@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
-import PostCard from './PostCard';
+import PostCard from '../components/features/PostCard';
 import { usePosts } from '../hooks';
 
 const CategoryPage = () => {

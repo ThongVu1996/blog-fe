@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import HomePage from './pages/HomePage';
 import CategoryPage from './pages/CategoryPage';
 import DetailPage from './pages/DetailPage';
@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage';
 import EditorPage from './pages/EditorPage';
 import AboutPage from './pages/AboutPage';
 import CategoryManager from './pages/CategoryManager';
-import SpaceBackground from './components/SpaceBackground';
+import SpaceBackground from './components/layout/SpaceBackground';
 import { useAuthStore } from './stores';
 
 import './assets/styles/index.css';

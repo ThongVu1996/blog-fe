@@ -5,9 +5,9 @@ import {
   AlertTriangle, CheckCircle, XCircle
 } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
-import Markdown from '../components/Markdown';
+import Markdown from '../components/common/Markdown';
 import { useRef } from 'react';
-import CustomModal from '../components/CustomModal';
+import CustomModal from '../components/common/CustomModal';
 import { usePostBySlug, useDeletePost } from '../hooks';
 import { useAuthStore } from '../stores';
 

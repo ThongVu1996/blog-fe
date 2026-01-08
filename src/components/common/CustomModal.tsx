@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { AlertTriangle, Loader2, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
-import { CustomModalProps } from '../types';
+import { CustomModalProps } from '../../types';
 
 const CustomModal = ({
   isOpen,

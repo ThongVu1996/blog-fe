@@ -5,7 +5,7 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import MermaidChart from './MermaidChart';
-import { MarkdownProps } from '../types';
+import { MarkdownProps } from '../../types';
 
 import 'github-markdown-css/github-markdown-light.css';
 import 'highlight.js/styles/github.css';

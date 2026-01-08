@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Clock, ArrowRight } from 'lucide-react';
-import { getImageUrl } from '../config/constants';
-import { PostCardProps } from '../types';
+import { getImageUrl } from '../../config/constants';
+import { PostCardProps } from '../../types';
 
 const PostCard = ({ post, index }: PostCardProps) => {
   const navigate = useNavigate();

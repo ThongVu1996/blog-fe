@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
-import { MermaidChartProps } from '../types';
+import { MermaidChartProps } from '../../types';
 
 const MermaidChart = ({ chart }: MermaidChartProps) => {
   const [svg, setSvg] = useState('');

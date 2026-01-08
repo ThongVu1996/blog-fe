@@ -1,5 +1,5 @@
 import { Loader2, TrendingUp, Mail } from 'lucide-react';
-import PostCard from './PostCard';
+import PostCard from '../components/features/PostCard';
 import { useNavigate } from 'react-router-dom';
 import { usePosts } from '../hooks';
 

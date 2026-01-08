@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { postService } from '../services';
 import { queryKeys } from '../lib/queryClient';
-import { Post } from '../types';
 
 /**
  * Hook to fetch all posts with optional filters
