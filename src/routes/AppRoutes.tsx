@@ -1,36 +1,69 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
-import PostPage from '../pages/PostPage';
-import DetailPage from '../pages/DetailPage';
-import LoginPage from '../pages/LoginPage';
-import EditorPage from '../pages/EditorPage';
-import AboutPage from '../pages/AboutPage';
-import CategoryManager from '../pages/CategoryManager';
-import NotFoundPage from '../pages/NotFoundPage';
-import { useAuthStore } from '../stores';
+import { Suspense } from 'react';
+import { useRoutes, Navigate } from 'react-router-dom';
+import ProtectedRoute from '../components/common/ProtectedRoute';
+import {
+    HomePage,
+    PostPage,
+    DetailPage,
+    LoginPage,
+    EditorPage,
+    AboutPage,
+    CategoryManager,
+    NotFoundPage,
+} from './lazyImports';
+
+// Loading component
+import PageLoader from '../components/common/PageLoader';
 
 const AppRoutes = () => {
-    const { isLoggedIn } = useAuthStore();
+    const element = useRoutes([
+        {
+            path: '/',
+            element: <HomePage />,
+        },
+        {
+            path: '/posts/category/:slug',
+            element: <PostPage />,
+        },
+        {
+            path: '/posts/:slug',
+            element: <DetailPage />,
+        },
+        {
+            path: '/login',
+            element: <LoginPage />,
+        },
+        {
+            path: '/editor',
+            element: <EditorPage />,
+        },
+        {
+            path: '/editor/:id',
+            element: <EditorPage />,
+        },
+        {
+            path: '/about',
+            element: <AboutPage />,
+        },
+        {
+            path: '/manage-categories',
+            element: (
+                <ProtectedRoute>
+                    <CategoryManager />
+                </ProtectedRoute>
+            ),
+        },
+        {
+            path: '/404',
+            element: <NotFoundPage />,
+        },
+        {
+            path: '*',
+            element: <Navigate to="/404" replace />,
+        },
+    ]);
 
-    return (
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/posts/category/:slug" element={<PostPage />} />
-            <Route path="/posts/:slug" element={<DetailPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/editor" element={<EditorPage />} />
-            <Route path="/editor/:id" element={<EditorPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route
-                path="/manage-categories"
-                element={isLoggedIn ? <CategoryManager /> : <Navigate to="/login" />}
-            />
-
-            {/* 404 Route */}
-            <Route path="/404" element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-    );
+    return <Suspense fallback={<PageLoader />}>{element}</Suspense>;
 };
 
 export default AppRoutes;

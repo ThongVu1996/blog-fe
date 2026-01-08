@@ -26,7 +26,7 @@ const SpaceBackground = () => {
           width: 1,
         }, move: { enable: true, speed: 1, direction: "none", outModes: { default: "out" }, }, number: {
           density: {
-            enable: true, area: 800
+            enable: true
           }, value: 80,
         }, opacity: { value: 0.3 }, shape: { type: "circle" }, size: {
           value: {

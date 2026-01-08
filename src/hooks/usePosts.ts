@@ -58,7 +58,7 @@ export const useUpdatePost = () => {
     return useMutation({
         mutationFn: ({ id, formData }: { id: number | string; formData: FormData }) =>
             postService.update(id, formData),
-        onSuccess: (data, variables) => {
+        onSuccess: (_, variables) => {
             // Invalidate specific post and list
             queryClient.invalidateQueries({ queryKey: queryKeys.posts.byId(variables.id) });
             queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });

@@ -47,7 +47,7 @@ export const useUpdateCategory = () => {
     return useMutation({
         mutationFn: ({ id, name }: { id: number | string; name: string }) =>
             categoryService.update(id, name),
-        onSuccess: (data, variables) => {
+        onSuccess: (_, variables) => {
             // Invalidate specific category and list
             queryClient.invalidateQueries({ queryKey: queryKeys.categories.detail(variables.id) });
             queryClient.invalidateQueries({ queryKey: queryKeys.categories.all });

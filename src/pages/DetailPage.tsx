@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  ChevronLeft, Edit, Trash2, Loader2,
-  AlertTriangle, CheckCircle, XCircle
+  ChevronLeft, Edit, Trash2, CheckCircle, XCircle
 } from 'lucide-react';
 import { getImageUrl } from '../config/constants';
 import Markdown from '../components/common/Markdown';
@@ -10,6 +9,7 @@ import { useRef } from 'react';
 import CustomModal from '../components/common/CustomModal';
 import { usePostBySlug, useDeletePost } from '../hooks';
 import { useAuthStore } from '../stores';
+import PageLoader from '../components/common/PageLoader';
 
 const DetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -70,11 +70,7 @@ const DetailPage = () => {
     }
   };
 
-  if (isLoading) return (
-    <div className="loader-container">
-      <Loader2 className="spin" size={48} />
-    </div>
-  );
+  if (isLoading) return <PageLoader />;
 
   if (!post) return <div className="loader-container">Không tìm thấy bài viết</div>;
 

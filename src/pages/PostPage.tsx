@@ -1,5 +1,6 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { Loader2, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Navigate, useParams } from 'react-router-dom';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+import PageLoader from '../components/common/PageLoader';
 import PostCard from '../components/features/PostCard';
 import { usePosts, useCategories } from '../hooks';
 
@@ -7,7 +8,6 @@ const PostPage = () => {
   const { slug } = useParams();
 
   const { data: categories = [], isLoading: isCatsLoading } = useCategories();
-  const navigate = useNavigate();
 
   const currentCategory = categories.find(c => c.name.toLowerCase() === slug);
   const categoryId = currentCategory?.id;
@@ -16,14 +16,9 @@ const PostPage = () => {
 
   const isLoading = isCatsLoading || (categoryId && isPostsLoading);
 
-  if (isLoading && !isPostsLoading) return (
-    <div className="loader-full">
-      <Loader2 className="spin-icon" size={48} />
-      <p>Đang định vị tọa độ không gian...</p>
-    </div>
-  );
+  if (isLoading && !isPostsLoading) return <PageLoader message="Đang định vị tọa độ không gian..." />;
 
-  if (!isCatsLoading && !currentCategory) return navigate('/404')
+  if (!isCatsLoading && !currentCategory) return <Navigate to="/404" replace />;
 
   return (
     <div className="category-container">
