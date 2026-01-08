@@ -4,10 +4,23 @@ import { getImageUrl } from '../config/constants';
 import { PostCardProps } from '../types';
 
 const PostCard = ({ post, index }: PostCardProps) => (
-  <Link to={`/posts/${post.slug}`} className="news-item animate-fade border-gradient" style={{ animationDelay: `${(index || 0) * 0.1}s` }}>
+  <Link
+    to={`/posts/${post.slug}`}
+    className="news-item animate-fade border-gradient"
+    style={{ animationDelay: `${(index || 0) * 0.1}s` }}
+  >
     {/* Phần hình ảnh bên trái */}
     <div className="news-item-image">
-      <img src={getImageUrl(post.image)} alt={post.title} loading="lazy" />
+      <img
+        src={getImageUrl(post.image)}
+        alt={post.title}
+        loading="lazy"
+        decoding="async"
+        style={{
+          backgroundColor: 'var(--bg-darker)',
+          minHeight: '200px'
+        }}
+      />
     </div>
 
     {/* Phần nội dung bên phải */}

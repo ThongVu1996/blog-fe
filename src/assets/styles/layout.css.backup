@@ -2,20 +2,9 @@
   width: 100%;
 }
 
-/* Main content container */
-.main-container {
-  min-height: 80vh;
-  width: 90%;
-  margin: 0 auto;
-  padding-top: 70px;
-  /* Navbar height */
-}
-
-
 .navbar {
   display: flex;
-  background: rgba(5, 7, 10, 0.8);
-  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
   left: 0;
@@ -23,11 +12,11 @@
   padding: 0 5%;
   height: 70px;
   z-index: 1000;
-  border-bottom: 1px solid var(--border);
-  scrollbar-gutter: stable;
+  /* Quan trọng: Ngăn chặn layout shift do thanh cuộn */
+  scrollbar-gutter: stable; 
+  /* Đảm bảo box-sizing không làm thay đổi size khi có border/padding */
   box-sizing: border-box;
 }
-
 .nav-content {
   display: flex;
   justify-content: space-between;
@@ -148,6 +137,64 @@
 .footer {
   padding: 60px 0 40px;
   text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--text-light);
+  margin-top: 80px;
+}
+
+
+#root { width: 100%; }
+
+.navbar {
+  display: flex;
+  background: rgba(5, 7, 10, 0.8); /* Nền tối trong suốt */
+  backdrop-filter: blur(12px);    /* Hiệu ứng mờ kính */
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 70px;
+  padding: 0 5%;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-icon {
+  background: var(--primary);
+  box-shadow: var(--gold-glow);
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+}
+
+.logo-text {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(212, 175, 55, 0.1); /* Hover màu vàng gold nhạt */
+}
+
+.footer {
+  padding: 60px 0 40px;
+  text-align: center;
+  /* border-top: 1px solid var(--border); */
   border: 0;
   color: var(--text-light);
   background: rgba(0, 0, 0, 0.3);

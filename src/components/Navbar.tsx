@@ -28,13 +28,19 @@ const Navbar = () => {
           <span className="logo-text">TechBlog</span>
         </Link>
 
-        <button className="nav-toggle" onClick={() => setIsOpen(!isOpen)}>
+        <button
+          className="nav-toggle"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Đóng menu" : "Mở menu"}
+          aria-expanded={isOpen}
+          aria-controls="main-navigation"
+        >
           {isOpen ?
             <X size={28} /> :
             <Menu size={28} />}
         </button>
 
-        <div className={`nav-menu ${isOpen ? 'is-open' : ''}`}>
+        <div id="main-navigation" className={`nav-menu ${isOpen ? 'is-open' : ''}`}>
           <div className="nav-links">
             {categories.map((cat) => (
               <Link key={cat.id} to={`/category/${cat.id}`} className="nav-link">

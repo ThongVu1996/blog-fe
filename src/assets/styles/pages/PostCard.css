@@ -12,11 +12,12 @@
     flex-direction: column;
     text-decoration: none;
     color: inherit;
-    /* Độ cao tổng thể của Card */
-    height: 400px;
+    /* Độ cao linh hoạt theo nội dung */
+    min-height: 400px;
+    height: auto;
     overflow: hidden;
     /* Đảm bảo padding không làm tăng kích thước card */
-    box-sizing: border-box; 
+    box-sizing: border-box;
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -31,7 +32,7 @@
 .news-item-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     transition: transform 0.6s ease;
 }
 
@@ -73,6 +74,7 @@
     /* Giới hạn tiêu đề 2 dòng để tránh đè footer */
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -85,6 +87,7 @@
     /* Giới hạn tóm tắt 3 dòng */
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -92,7 +95,7 @@
 
 /* --- 5. CHÂN BÀI VIẾT (FOOTER) --- */
 .news-footer {
-    margin-top: auto; 
+    margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
@@ -123,15 +126,41 @@
 }
 
 
-.news-list {
-  .news-item {
-    height: 200px;
+/* Horizontal layout for news list */
+.news-list .news-item {
+    min-height: 0;
+    /* Reset min-height */
+    height: 240px;
+    /* Fixed height cho đều nhau */
     flex-direction: row;
-    .news-item-image {
-      width: 30%;
+}
+
+.news-list .news-item .news-item-image {
+    width: 30%;
+    height: 100%;
+}
+
+.news-list .news-item .news-info {
+    width: 70%;
+    height: 100%;
+    /* Full height */
+}
+
+/* Responsive: Chuyển về vertical trên mobile */
+@media (max-width: 768px) {
+    .news-list .news-item {
+        flex-direction: column !important;
+        height: auto !important;
+        /* Mobile cần auto để chứa ảnh + text */
+        min-height: 400px;
     }
-    .news-info {
-      width: 70%;
+
+    .news-list .news-item .news-item-image {
+        width: 100% !important;
+        height: 200px;
     }
-  }
+
+    .news-list .news-item .news-info {
+        width: 100% !important;
+    }
 }

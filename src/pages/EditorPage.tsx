@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Save, Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
+import { Loader2, Image as ImageIcon, Github, Download, Star, CheckCircle2 } from 'lucide-react';
 import { API_BASE_URL, STORAGE_KEY, getImageUrl } from '../config/constants';
 import Toast from '../components/Toast';
 import { useCategories } from '../hooks';
@@ -32,8 +32,16 @@ const EditorPage = () => {
   useEffect(() => {
     if (id) {
       fetch(`${API_BASE_URL}/posts/${id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`Failed to fetch post: ${res.status}`);
+          }
+          return res.json();
+        })
         .then(result => {
+          if (!result.data) {
+            throw new Error('Invalid response: missing data');
+          }
           const data = result.data;
           setFormData({
             ...data,
@@ -42,9 +50,15 @@ const EditorPage = () => {
             status: data.status || 'published'
           });
           if (data.image) setPreviewUrl(getImageUrl(data.image));
+        })
+        .catch(error => {
+          console.error('Error loading post:', error);
+          showToast(`Không thể tải bài viết: ${error.message}`, 'error');
+          // Navigate back after showing error
+          setTimeout(() => navigate('/'), 2000);
         });
     }
-  }, [id]);
+  }, [id, navigate]);
 
   const slugify = (str: string) => {
     if (!str) return '';
@@ -68,14 +82,14 @@ const EditorPage = () => {
       let markdownText = await response.text();
 
       // 1. Xử lý đường dẫn ảnh nội bộ (Relative paths) sang link GitHub Raw
-      markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (match, alt, path) => {
+      markdownText = markdownText.replace(/!\[([^\]]*)\]\((?!http|https)([^)]+)\)/g, (_, alt, path) => {
         const cleanPath = path.replace(/^\.\//, '');
         return `![${alt}](${basePath}${cleanPath}?raw=true)`;
       });
 
       // 2. Đồng bộ hóa các Anchor link trong mục lục (Tùy chọn)
       // Nếu bạn muốn giữ nguyên 100% gốc không qua slugify, có thể comment đoạn này
-      markdownText = markdownText.replace(/\[([^\]]+)\]\(#([^\)]+)\)/g, (match, text, anchor) => {
+      markdownText = markdownText.replace(/\[([^\]]+)\]\(#([^\)]+)\)/g, (_, text, anchor) => {
         return `[${text}](#${slugify(anchor)})`;
       });
 
@@ -266,18 +280,21 @@ const EditorPage = () => {
 
         <div className="form-group">
           <label className="form-label">NỘI DUNG ({formData.type.toUpperCase()})</label>
-          <textarea className="form-textarea" value={formData.content} onChange={e => setFormData({
-            ...formData, content:
-              e.target.value
-          })} required style={{ minHeight: '400px' }} />
+          <textarea
+            className="form-textarea content-editor"
+            value={formData.content}
+            onChange={e => setFormData({ ...formData, content: e.target.value })}
+            required
+          />
         </div>
 
         <div className="form-group">
           <label className="form-label">MỤC LỤC (TOC)</label>
-          <textarea className="form-textarea" value={formData.toc} onChange={e => setFormData({
-            ...formData, toc:
-              e.target.value
-          })} style={{ minHeight: '100px' }} />
+          <textarea
+            className="form-textarea toc-editor"
+            value={formData.toc}
+            onChange={e => setFormData({ ...formData, toc: e.target.value })}
+          />
         </div>
 
         <button type="submit" className="btn-save-post" disabled={isSaving}>

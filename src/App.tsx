@@ -20,7 +20,7 @@ const App = () => {
     <BrowserRouter>
       <SpaceBackground />
       <Navbar />
-      <main className="container" style={{ minHeight: '80vh', width: '90%' }}>
+      <main className="main-container">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/category/:id" element={<CategoryPage />} />

@@ -1,57 +1,120 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  /* Màu nền & Bố cục */
-  --bg-deep: #05070a;
-  --card-bg: #0f172a;
+  /* ===== BACKGROUND COLORS ===== */
+  --bg-main: #1a1b26;
+  /* Nền chính */
+  --bg-panel: #24283b;
+  /* Panel/Card background */
+  --bg-darker: #16161e;
+  /* Code block, darker areas */
+  --bg-elevated: #414868;
+  /* Hover states */
 
-  /* Màu chữ */
-  --text-main: #ffffff;
-  --text-muted: #94a3b8;
+  /* ===== PRIMARY COLORS ===== */
+  --primary: #7aa2f7;
+  /* Blue - Main brand color */
+  --secondary: #7dcfff;
+  /* Cyan - Secondary actions */
+  --accent: #bb9af7;
+  /* Purple - Highlights */
 
-  /* Palette màu Cyberpunk cho Border & Glow */
-  --cyan: #00f2ff;
-  --purple: #9d50bb;
-  --blue: #3b82f6;
-  --green: #10B981;
+  /* ===== SEMANTIC COLORS ===== */
+  --success: #9ece6a;
+  /* Green - Success states */
+  --warning: #e0af68;
+  /* Orange - Warnings */
+  --danger: #f7768e;
+  /* Red - Errors, delete */
+  --info: #7dcfff;
+  /* Cyan - Info messages */
 
-  /* Cấu hình Font & Phụ trợ */
-  --font-primary: 'Inter', sans-serif;
-  --font-heading: 'Space Grotesk', sans-serif;
-  --border-soft: rgba(255, 255, 255, 0.1);
-  --modal-bg: #111418;       /* Màu nền tối sâu hơn */
-  --danger-neon: #ff3333;    /* Đỏ neon phát sáng */
-  --info-neon: #00d1ff;      /* Xanh cyan neon */
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --modal-bg: #0b0d11;         /* Màu nền Modal tối sâu hơn */
-  --danger-neon: #ff3333;      /* Đỏ Neon */
-  --info-neon: #00d1ff;        /* Cyan Neon */
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --bg-space: #05070A;
-  --bg-card: rgba(13, 17, 23, 0.8);
-  --primary: #00D1FF; /* Cyan Neon */
-  --primary-glow: rgba(0, 209, 255, 0.3);
-  --text-main: #F8FAFC; /* Trắng tuyết */
-  --text-body: #CBD5E1; /* Xám sáng dễ đọc */
-  --text-muted: #94A3B8; /* Xám Slate */
-  --border: rgba(255, 255, 255, 0.08);
-  --font-heading: 'Space Grotesk', 'Orbitron', sans-serif;
-  /* --- BẢNG MÀU CHỦ ĐẠO --- */
-  --bg-main: #1a1b26;           /* Nền chính xanh đen bão tố */
-  --bg-darker: #16161e;         /* Nền tối sâu cho Code/Table */
-  --bg-panel: #24283b;          /* Nền Panel nội dung */
-  
-  --primary: #7aa2f7;           /* Xanh dương chính */
-  --secondary: #7aa2f7;         /* Cyan sáng cho điểm nhấn */
-  --accent: #bb9af7;            /* Tím nhạt cho chữ đậm */
-  
-  /* --- MÀU CHỮ --- */
-  --text-main: #c0caf5;         /* Chữ chính: High legibility */
-  --text-code: #7aa2f7;         /* Chữ trong code */
-  --text-muted: #949ecb;        /* Chữ phụ */
-  
-  /* --- HỆ THỐNG VIỀN & BÓNG --- */
+  /* ===== TEXT COLORS ===== */
+  --text-main: #c0caf5;
+  /* Primary text */
+  --text-secondary: #a9b1d6;
+  /* Secondary text */
+  --text-muted: #565f89;
+  /* Muted/disabled text */
+  --text-code: #7aa2f7;
+  /* Code syntax highlighting */
+
+  /* ===== BORDERS ===== */
+  --border-subtle: rgba(122, 162, 247, 0.15);
   --border: rgba(122, 162, 247, 0.25);
-  --shadow-sharp: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --border-strong: rgba(122, 162, 247, 0.5);
+
+  /* ===== SHADOWS ===== */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-sharp: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(122, 162, 247, 0.3);
+
+  /* ===== SPACING SCALE (8px base) ===== */
+  --space-1: 0.25rem;
+  /* 4px */
+  --space-2: 0.5rem;
+  /* 8px */
+  --space-3: 0.75rem;
+  /* 12px */
+  --space-4: 1rem;
+  /* 16px */
+  --space-6: 1.5rem;
+  /* 24px */
+  --space-8: 2rem;
+  /* 32px */
+  --space-12: 3rem;
+  /* 48px */
+  --space-16: 4rem;
+  /* 64px */
+
+  /* ===== BORDER RADIUS ===== */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* ===== TYPOGRAPHY ===== */
+  --font-heading: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-code: 'Fira Code', 'JetBrains Mono', monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.875rem;
+  /* 14px */
+  --text-base: 1rem;
+  /* 16px */
+  --text-lg: 1.125rem;
+  /* 18px */
+  --text-xl: 1.25rem;
+  /* 20px */
+  --text-2xl: 1.5rem;
+  /* 24px */
+  --text-3xl: 1.875rem;
+  /* 30px */
+  --text-4xl: 2.25rem;
+  /* 36px */
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+
+  /* ===== LEGACY SUPPORT (for backward compatibility) ===== */
+  --bg-deep: var(--bg-main);
+  --card-bg: var(--bg-panel);
+  --cyan: var(--secondary);
+  --purple: var(--accent);
+  --blue: var(--primary);
+  --green: var(--success);
+  --text-light: var(--text-muted);
+  --white: var(--bg-panel);
+  --border-soft: var(--border-subtle);
+  --gold-glow: var(--shadow-glow);
+  --primary-hover: #89b4fa;
 }
