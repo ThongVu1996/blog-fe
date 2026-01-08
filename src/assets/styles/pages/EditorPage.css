@@ -1,44 +1,253 @@
+/* ==========================================================================
+   EDITOR PAGE - AEROSPACE THEME
+   ========================================================================== */
+
 .editor-container {
-  max-width: 850px;
+  max-width: 900px;
   margin-inline: auto;
   margin-block: 40px;
-  background: var(--white);
-  padding: clamp(20px, 5vw, 40px);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.6);
+  /* Glass effect dark background */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .editor-header {
   margin-bottom: 32px;
-  font-weight: 900;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+
+/* --- FORM ELEMENTS --- */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #f1f5f9;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary, #0ea5e9);
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
+  background: rgba(30, 41, 59, 0.8);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+/* Custom Select Styling */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
 }
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 }
 
-/* Container cho phần chọn ảnh và hiển thị ảnh */
-.image-upload-section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+/* --- SPECIAL CARDS (Github & Featured) --- */
+.featured-config-card,
+.import-github-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-/* Khung hiển thị ảnh xem trước */
+/* Featured Card Special Style */
+.featured-config-card {
+  border-color: rgba(234, 179, 8, 0.3);
+  /* Gold/Yellow tint */
+}
+
+.featured-config-card:hover,
+.import-github-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
+}
+
+.featured-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Custom Checkbox */
+.featured-checkbox-wrapper input[type="checkbox"] {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(234, 179, 8, 0.5);
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.featured-checkbox-wrapper input[type="checkbox"]:checked {
+  background: #eab308;
+  border-color: #eab308;
+}
+
+.featured-checkbox-wrapper input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  color: #000;
+  font-weight: 900;
+  font-size: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.checkbox-custom-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #eab308;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.featured-options {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(234, 179, 8, 0.2);
+  animation: slideDown 0.3s ease-out;
+}
+
+/* --- IMPORT GITHUB SECTION --- */
+.import-github-card .form-label.mini {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem !important;
+  margin-bottom: 12px;
+}
+
+.import-controls {
+  display: flex;
+  gap: 12px;
+}
+
+.import-controls .form-input {
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(255, 255, 255, 0.15);
+  transition: all 0.2s;
+}
+
+.import-controls .form-input:focus {
+  background: rgba(15, 23, 42, 1);
+  border-color: #fff;
+}
+
+.btn-import {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #0f172a;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-import:hover {
+  background: #f1f5f9;
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.btn-import:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- IMAGE UPLOAD --- */
+.image-upload-section {
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
 .image-preview-box {
   width: 100%;
-  max-width: 400px;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius-md);
-  border: 2px dashed var(--border);
-  overflow: hidden;
+  aspect-ratio: 21/9;
+  background: rgba(30, 41, 59, 0.3);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f9fafb;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.image-preview-box:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.preview-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #64748b;
 }
 
 .preview-img {
@@ -47,178 +256,51 @@
   object-fit: cover;
 }
 
-.preview-placeholder {
-  color: var(--text-light);
-  font-size: 0.9rem;
-}
-
-.editor-submit-btn {
+/* --- SUBMIT BUTTON --- */
+.btn-save-post {
   width: 100%;
-  justify-content: center;
-  margin-top: 20px;
-  padding-block: 14px;
-}
-
-.featured-settings-box {
-  background: #fffbeb;
-  /* Màu vàng nhạt để gây chú ý đây là phần quan trọng */
-  padding: 20px;
-  border-radius: var(--radius-md);
-  border: 1px solid #fde68a;
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.checkbox-label {
+  padding: 18px;
+  background: linear-gradient(135deg, var(--primary, #0ea5e9) 0%, #3b82f6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 12px;
   cursor: pointer;
-  font-weight: 600;
-  color: #92400e;
+  transition: all 0.3s;
+  box-shadow: 0 10px 20px -5px rgba(14, 165, 233, 0.4);
+  margin-top: 20px;
 }
 
-.checkbox-label input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
+.btn-save-post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(14, 165, 233, 0.6);
 }
 
-.featured-order-input {
-  padding-top: 10px;
-  border-top: 1px dashed #fde68a;
+.btn-save-post:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 
-/* Hiệu ứng mờ dần khi hiện option chọn vị trí */
+/* Animations */
 .animate-fade {
-  animation: fadeIn 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(20px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Đảm bảo textarea nội dung đủ cao để làm việc */
-.form-textarea {
-  resize: vertical;
-}
-
-/* --- Tách biệt Feature Box và Github Box --- */
-
-.featured-config-card {
-  background: #fffdf5;
-  /* Màu vàng kem nhạt */
-  border: 1px solid #fde68a;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
-  /* Tạo khoảng cách với box dưới */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.import-github-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-}
-
-.featured-checkbox-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.featured-checkbox-wrapper input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: #b45309;
-}
-
-.checkbox-custom-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: #854d0e;
-}
-
-.featured-options {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px dashed #fde68a;
-}
-
-.import-controls {
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.import-controls .form-input {
-  margin-bottom: 0;
-  /* Xóa margin thừa */
-  flex: 1;
-}
-
-.btn-import {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #1e293b;
-  color: white;
-  padding: 0 20px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.btn-import:hover {
-  background: #0f172a;
-}
-
-.btn-save-post {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  background: #eab308;
-  color: #000;
-  font-weight: 700;
-  padding: 16px;
-  border-radius: 12px;
-  margin-top: 30px;
-  font-size: 1.1rem;
-  transition: opacity 0.2s;
-}
-
-.btn-save-post:hover {
-  opacity: 0.9;
-}
-
-.mini {
-  font-size: 0.75rem !important;
-  letter-spacing: 0.05em;
-  margin-bottom: 6px;
-}
-
-.animate-slide-down {
-  animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
@@ -233,54 +315,31 @@
   }
 }
 
-.featured-config-card {
-  background: #fffdf5;
-  border: 1px solid #fde68a;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.import-github-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-.mini {
-  font-size: 0.7rem !important;
-  font-weight: 800;
-  color: #64748b;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.animate-fade-in {
-  animation: fadeInRight 0.3s ease-out;
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Editor Specific Textareas */
+/* Editor Specific */
 .content-editor {
-  min-height: 400px;
+  min-height: 500px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  line-height: 1.6;
 }
 
-.toc-editor {
-  min-height: 100px;
+/* Responsive */
+@media (max-width: 768px) {
+  .editor-container {
+    padding: 24px;
+    margin: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .import-controls {
+    flex-direction: column;
+  }
+
+  .btn-import {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+  }
 }
