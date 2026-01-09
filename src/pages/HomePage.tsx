@@ -12,7 +12,8 @@ const HomePage = () => {
 
   // Lấy bài viết đầu tiên làm tiêu điểm (Featured)
   const featuredPost = posts[0];
-  const remainingPosts = posts.slice(1);
+  console.log(posts);
+  const remainingPosts = posts;
 
   return (
     <div className="animate-fade">
