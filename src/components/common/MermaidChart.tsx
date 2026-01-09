@@ -12,19 +12,34 @@ const MermaidChart = ({ chart }: MermaidChartProps) => {
       if (!chart) return;
 
       try {
-        // Reset Mermaid để tránh lỗi cache
         mermaid.initialize({
           startOnLoad: false,
-          theme: 'default',
+          theme: 'dark',
+          themeVariables: {
+            primaryColor: '#7aa2f7',
+            primaryTextColor: '#c0caf5',
+            primaryBorderColor: '#7aa2f7',
+            lineColor: '#7aa2f7',
+            secondaryColor: '#bb9af7',
+            tertiaryColor: '#1a1b26',
+            background: '#1a1b26',
+            mainBkg: '#1a1b26',
+            nodeBorder: '#7aa2f7',
+            clusterBkg: 'rgba(122, 162, 247, 0.1)',
+            titleColor: '#c0caf5',
+            edgeLabelBackground: '#1a1b26',
+          },
+          flowchart: {
+            curve: 'basis',
+            padding: 20,
+          },
           securityLevel: 'loose',
         });
 
-        // Vẽ sơ đồ ra chuỗi SVG
         const { svg: svgContent } = await mermaid.render(chartId.current, chart);
         setSvg(svgContent);
       } catch (error) {
         console.error("Mermaid Render Error:", error);
-        // Nếu lỗi, hiển thị mã thô để debug
         setSvg(`<pre>${chart}</pre>`);
       }
     };
@@ -35,8 +50,7 @@ const MermaidChart = ({ chart }: MermaidChartProps) => {
   return (
     <div
       ref={containerRef}
-      className="mermaid-container"
-      style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}
+      className="mermaid-container mermaid-animated"
       dangerouslySetInnerHTML={{ __html: svg }}
     />
   );

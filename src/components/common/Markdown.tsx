@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, ExternalLink, Quote, Sparkles } from 'lucide-react';
 import MermaidChart from './MermaidChart';
 import { MarkdownProps } from '../../types';
 import { slugify } from '../../utils/slugify';
@@ -16,7 +16,6 @@ const CodeBlock = ({ children, ...props }: any) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    // Extract text content from the code element
     const codeElement = children?.props?.children;
     const textToCopy = typeof codeElement === 'string'
       ? codeElement
@@ -55,21 +54,27 @@ const extractText = (node: any): string => {
   return '';
 };
 
-// Custom heading component to generate consistent IDs using shared slugify
+// Custom heading component with anchor link
 const createHeading = (level: number) => {
   const HeadingComponent = ({ children, ...props }: any) => {
     const text = extractText(children);
     const id = slugify(text);
 
     const HeadingTag = ({ ...tagProps }: any) => {
+      const content = (
+        <>
+          <span className="heading-anchor" aria-hidden="true">#</span>
+          {children}
+        </>
+      );
       switch (level) {
-        case 1: return <h1 id={id} {...tagProps}>{children}</h1>;
-        case 2: return <h2 id={id} {...tagProps}>{children}</h2>;
-        case 3: return <h3 id={id} {...tagProps}>{children}</h3>;
-        case 4: return <h4 id={id} {...tagProps}>{children}</h4>;
-        case 5: return <h5 id={id} {...tagProps}>{children}</h5>;
-        case 6: return <h6 id={id} {...tagProps}>{children}</h6>;
-        default: return <h2 id={id} {...tagProps}>{children}</h2>;
+        case 1: return <h1 id={id} className="heading-with-anchor" {...tagProps}>{content}</h1>;
+        case 2: return <h2 id={id} className="heading-with-anchor" {...tagProps}>{content}</h2>;
+        case 3: return <h3 id={id} className="heading-with-anchor" {...tagProps}>{content}</h3>;
+        case 4: return <h4 id={id} className="heading-with-anchor" {...tagProps}>{content}</h4>;
+        case 5: return <h5 id={id} className="heading-with-anchor" {...tagProps}>{content}</h5>;
+        case 6: return <h6 id={id} className="heading-with-anchor" {...tagProps}>{content}</h6>;
+        default: return <h2 id={id} className="heading-with-anchor" {...tagProps}>{content}</h2>;
       }
     };
     return <HeadingTag {...props} />;
@@ -77,9 +82,26 @@ const createHeading = (level: number) => {
   return HeadingComponent;
 };
 
+// Image component with zoom and caption
+const ImageWithCaption = ({ src, alt }: any) => {
+  const [zoomed, setZoomed] = useState(false);
+
+  return (
+    <figure className="md-image-figure">
+      <img
+        src={src}
+        alt={alt || ''}
+        className={`md-image ${zoomed ? 'zoomed' : ''}`}
+        onClick={() => setZoomed(!zoomed)}
+      />
+      {alt && <figcaption className="md-image-caption">{alt}</figcaption>}
+    </figure>
+  );
+};
+
 const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, className = "" }, ref) => {
   return (
-    <div ref={ref} className={`${className} markdown-body`.trim()} onClick={onClick}>
+    <div ref={ref} className={`${className} markdown-body markdown-modern`.trim()} onClick={onClick}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeHighlight]} components={{
         h1: createHeading(1),
         h2: createHeading(2),
@@ -87,29 +109,78 @@ const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, 
         h4: createHeading(4),
         h5: createHeading(5),
         h6: createHeading(6),
+
+        // External links with icon
+        a({ href, children, ...props }: any) {
+          const isExternal = href?.startsWith('http');
+          return (
+            <a
+              href={href}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              className={isExternal ? 'external-link' : ''}
+              {...props}
+            >
+              {children}
+              {isExternal && <ExternalLink size={12} className="external-link-icon" />}
+            </a>
+          );
+        },
+
+        // Images with caption and zoom
+        img: ImageWithCaption,
+
+        // Styled blockquote as callout
+        blockquote({ children, ...props }: any) {
+          return (
+            <blockquote className="md-callout" {...props}>
+              <Quote size={20} className="callout-icon" />
+              <div className="callout-content">{children}</div>
+            </blockquote>
+          );
+        },
+
+        // Fancy horizontal rule
+        hr() {
+          return (
+            <div className="md-divider">
+              <Sparkles size={16} />
+            </div>
+          );
+        },
+
+        // Code blocks and inline code
         pre(props: any) {
           return <CodeBlock {...props} />;
         },
         code(props: any) {
           const { inline, className, children, ...rest } = props;
-          const match = /language-mermaid/.exec(className || ''); if (!inline
-            && match) {
-            return (<MermaidChart chart={String(children).replace(/\n$/, '')} />
-            );
+          const match = /language-mermaid/.exec(className || '');
+
+          if (!inline && match) {
+            return <MermaidChart chart={String(children).replace(/\n$/, '')} />;
           }
 
-          return (
-            <code className={className} {...rest}>
-              {children}
-            </code>
-          );
+          // Inline code with highlight
+          if (inline) {
+            return <code className="inline-code" {...rest}>{children}</code>;
+          }
+
+          return <code className={className} {...rest}>{children}</code>;
         },
+
+        // Table with wrapper
         table({ children, ...props }: any) {
           return (
             <div className="table-wrapper">
               <table {...props}>{children}</table>
             </div>
           );
+        },
+
+        // Styled list items
+        li({ children, ...props }: any) {
+          return <li className="md-list-item" {...props}>{children}</li>;
         },
       }}
       >
@@ -120,4 +191,5 @@ const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, 
 });
 
 export default Markdown;
+
 
