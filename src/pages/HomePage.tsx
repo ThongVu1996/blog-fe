@@ -1,18 +1,14 @@
-import { Loader2, TrendingUp, Mail } from 'lucide-react';
+import { TrendingUp, Mail } from 'lucide-react';
 import PostCard from '../components/features/PostCard';
 import { useNavigate } from 'react-router-dom';
 import { usePosts } from '../hooks';
+import PageLoader from '../components/common/PageLoader';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { data: posts = [], isLoading } = usePosts();
 
-  if (isLoading) return (
-    <div className="loader-container">
-      <Loader2 className="spin" size={56} />
-      <p>Đang tải dữ liệu kĩ thuật...</p>
-    </div>
-  );
+  if (isLoading) return <PageLoader />;
 
   // Lấy bài viết đầu tiên làm tiêu điểm (Featured)
   const featuredPost = posts[0];
