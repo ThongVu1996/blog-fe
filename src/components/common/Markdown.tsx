@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
+import rehypeUnwrapImages from 'rehype-unwrap-images';
 import { Copy, Check, ExternalLink, Quote, Sparkles } from 'lucide-react';
 import MermaidChart from './MermaidChart';
 import { MarkdownProps } from '../../types';
@@ -102,7 +103,7 @@ const ImageWithCaption = ({ src, alt }: any) => {
 const Markdown = forwardRef<HTMLDivElement, MarkdownProps>(({ onClick, content, className = "" }, ref) => {
   return (
     <div ref={ref} className={`${className} markdown-body markdown-modern`.trim()} onClick={onClick}>
-      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeHighlight]} components={{
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeUnwrapImages, rehypeRaw, rehypeHighlight]} components={{
         h1: createHeading(1),
         h2: createHeading(2),
         h3: createHeading(3),
