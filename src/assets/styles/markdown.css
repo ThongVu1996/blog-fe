@@ -1,0 +1,407 @@
+/* ==========================================================================
+   MODERN MARKDOWN STYLES
+   ========================================================================== */
+
+.markdown-modern {
+    line-height: 1.8;
+    color: var(--text-primary);
+}
+
+/* Headings with anchor links */
+.markdown-modern .heading-with-anchor {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.markdown-modern .heading-anchor {
+    opacity: 0;
+    color: var(--primary);
+    font-weight: 400;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.markdown-modern .heading-with-anchor:hover .heading-anchor {
+    opacity: 1;
+}
+
+/* External links with icon */
+.markdown-modern .external-link {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--primary);
+    transition: all 0.2s ease;
+}
+
+.markdown-modern .external-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.markdown-modern .external-link-icon {
+    display: inline-block;
+    margin-left: 4px;
+    vertical-align: middle;
+    opacity: 0.7;
+}
+
+/* Images with zoom and caption */
+.markdown-modern .md-image-figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.markdown-modern .md-image {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    cursor: zoom-in;
+    transition: all 0.3s ease;
+}
+
+.markdown-modern .md-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(122, 162, 247, 0.3);
+}
+
+.markdown-modern .md-image.zoomed {
+    transform: scale(1.5);
+    cursor: zoom-out;
+    z-index: 100;
+    position: relative;
+}
+
+.markdown-modern .md-image-caption {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Callout blockquotes */
+.markdown-modern .md-callout {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    background: linear-gradient(135deg, rgba(122, 162, 247, 0.1), rgba(187, 154, 247, 0.05));
+    border-left: 4px solid var(--primary);
+    border-radius: 0 12px 12px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.markdown-modern .md-callout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(122, 162, 247, 0.05));
+}
+
+.markdown-modern .callout-icon {
+    flex-shrink: 0;
+    color: var(--primary);
+    opacity: 0.8;
+}
+
+.markdown-modern .callout-content {
+    flex: 1;
+}
+
+.markdown-modern .callout-content p {
+    margin: 0;
+}
+
+/* Fancy divider */
+.markdown-modern .md-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 0;
+    color: var(--primary);
+}
+
+.markdown-modern .md-divider::before,
+.markdown-modern .md-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+}
+
+.markdown-modern .md-divider svg {
+    margin: 0 1rem;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Inline code */
+.markdown-modern .inline-code {
+    padding: 0.2em 0.5em;
+    margin: 0 0.1em;
+    font-size: 0.9em;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    background: rgba(122, 162, 247, 0.15);
+    color: var(--primary);
+    border-radius: 6px;
+    border: 1px solid rgba(122, 162, 247, 0.2);
+}
+
+/* List items with better styling */
+.markdown-modern .md-list-item {
+    position: relative;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.markdown-modern ul .md-list-item::marker {
+    color: var(--primary);
+}
+
+.markdown-modern ol .md-list-item::marker {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Tables enhancement */
+.markdown-modern .table-wrapper {
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+}
+
+.markdown-modern table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-panel);
+}
+
+.markdown-modern th {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+}
+
+.markdown-modern td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.markdown-modern tr:hover td {
+    background: rgba(122, 162, 247, 0.05);
+}
+
+/* Code blocks enhancement */
+.markdown-modern .code-block-wrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.markdown-modern .code-block-wrapper pre {
+    margin: 0;
+    padding: 1.5rem;
+    background: #0d1117 !important;
+    border-radius: 12px;
+}
+
+.markdown-modern .copy-code-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 6px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.markdown-modern .copy-code-btn:hover {
+    background: rgba(122, 162, 247, 0.3);
+    color: var(--primary);
+}
+
+.markdown-modern .copy-code-btn.copied {
+    background: rgba(125, 211, 252, 0.2);
+    color: #7dd3fc;
+}
+
+/* ==========================================================================
+   MERMAID CHART ANIMATIONS
+   ========================================================================== */
+
+.mermaid-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 2rem;
+    min-height: 300px;
+    background: linear-gradient(135deg, rgba(26, 27, 38, 0.95), rgba(36, 40, 59, 0.95));
+    border-radius: 16px;
+    border: 1px solid rgba(122, 162, 247, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.mermaid-container svg {
+    min-width: 600px;
+    min-height: 250px;
+    width: 100%;
+    height: auto;
+    max-height: 800px;
+}
+
+/* Scale up text and elements in Mermaid */
+.mermaid-container .nodeLabel,
+.mermaid-container .edgeLabel,
+.mermaid-container .label {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.mermaid-container .node rect,
+.mermaid-container .node circle,
+.mermaid-container .node polygon {
+    stroke-width: 2px !important;
+}
+
+.mermaid-container .flowchart-link,
+.mermaid-container .edge-pattern-solid,
+.mermaid-container path.path {
+    stroke-width: 2px !important;
+}
+
+/* Animated data flow on edges/paths */
+.mermaid-animated .flowchart-link,
+.mermaid-animated .edge-pattern-solid,
+.mermaid-animated path.path {
+    stroke-dasharray: 10, 5;
+    animation: flowAnimation 1.5s linear infinite;
+}
+
+@keyframes flowAnimation {
+    from {
+        stroke-dashoffset: 30;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Glowing effect on nodes */
+.mermaid-animated .node rect,
+.mermaid-animated .node circle,
+.mermaid-animated .node polygon,
+.mermaid-animated .node ellipse {
+    filter: drop-shadow(0 0 8px rgba(122, 162, 247, 0.4));
+    transition: all 0.3s ease;
+}
+
+.mermaid-animated .node:hover rect,
+.mermaid-animated .node:hover circle,
+.mermaid-animated .node:hover polygon,
+.mermaid-animated .node:hover ellipse {
+    filter: drop-shadow(0 0 15px rgba(122, 162, 247, 0.8));
+    transform: scale(1.02);
+}
+
+/* Pulse animation on node labels */
+.mermaid-animated .nodeLabel {
+    animation: nodePulse 3s ease-in-out infinite;
+}
+
+@keyframes nodePulse {
+
+    0%,
+    100% {
+        opacity: 0.9;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Arrow markers animation */
+.mermaid-animated marker path {
+    fill: var(--primary);
+}
+
+/* Edge labels styling */
+.mermaid-animated .edgeLabel {
+    background: rgba(26, 27, 38, 0.9) !important;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(122, 162, 247, 0.3);
+}
+
+/* Subgraph/cluster styling */
+.mermaid-animated .cluster rect {
+    fill: rgba(122, 162, 247, 0.05) !important;
+    stroke: rgba(122, 162, 247, 0.3) !important;
+    rx: 12px;
+    ry: 12px;
+}
+
+.mermaid-animated .cluster-label {
+    fill: var(--primary) !important;
+    font-weight: 600;
+}
+
+/* Sequence diagram specific */
+.mermaid-animated .actor {
+    fill: var(--bg-panel) !important;
+    stroke: var(--primary) !important;
+}
+
+.mermaid-animated .messageLine0,
+.mermaid-animated .messageLine1 {
+    stroke-dasharray: 8, 4;
+    animation: flowAnimation 2s linear infinite;
+}
+
+/* Gantt chart specific */
+.mermaid-animated .task {
+    rx: 6px;
+    ry: 6px;
+}
+
+/* Pie chart specific */
+.mermaid-animated .pieCircle {
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}

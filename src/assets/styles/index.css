@@ -2,6 +2,7 @@
 @import "./base.css";
 @import "./layout.css";
 @import "./components.css";
+@import "./markdown.css";
 @import "./pages/PostCard.css";
 @import "./pages/HomePage.css";
 @import "./pages/DetailPage.css";
@@ -9,4 +10,4 @@
 @import "./pages/EditorPage.css";
 @import "./pages/CategoryManager.css";
 @import "./pages/CategoryPage.css";
-@import "modal.css"
+@import "modal.css";

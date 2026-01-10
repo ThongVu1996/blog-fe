@@ -4,33 +4,37 @@
    ========================================================================== */
 
 /* 1. NÚT BẤM CHÍNH (PRIMARY BUTTON) */
+/* 1. NÚT BẤM CHÍNH (PRIMARY BUTTON) */
 .btn-primary {
-  background: var(--primary); /* Vàng Gold #d4af37 */
-  color: #000000 !important; /* Chữ đen trên nền vàng nổi bật nhất */
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  /* Blue to Cyan */
+  color: #fff !important;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 24px;
   border-radius: var(--radius-md);
-  font-weight: 800; /* Đậm hơn để tăng tính kĩ thuật */
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
-  box-shadow: var(--gold-glow); /* Hiệu ứng phát sáng vàng */
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+  /* Cyan Glow */
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6);
+  filter: brightness(1.1);
 }
 
 /* 2. NÚT VIỀN (OUTLINE BUTTON) */
 .btn-outline {
   background: transparent;
-  color: var(--primary);
-  border: 1px solid var(--primary);
+  color: #38bdf8;
+  /* Cyan-400 */
+  border: 1px solid rgba(56, 189, 248, 0.5);
   padding: 10px 18px;
   border-radius: var(--radius-md);
   font-weight: 700;
@@ -38,12 +42,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 .btn-outline:hover {
-  background: rgba(212, 175, 55, 0.1);
-  box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.1);
+  background: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+  transform: translateY(-2px);
 }
 
 /* 3. NÚT ĐĂNG XUẤT / NGUY HIỂM */
@@ -75,24 +81,31 @@
   font-weight: 700;
   margin-bottom: 8px;
   font-size: 0.9rem;
-  color: var(--primary); /* Label màu vàng kĩ thuật */
+  color: var(--primary);
+  /* Label màu vàng kĩ thuật */
   text-align: start;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.form-input, .form-textarea, .form-select {
+.form-input,
+.form-textarea,
+.form-select {
   width: 100%;
   padding: 12px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: #1a1e24; /* Nền tối kĩ thuật */
+  background: #1a1e24;
+  /* Nền tối kĩ thuật */
   font-size: 1rem;
-  color: #ffffff; /* Chữ trắng */
+  color: #ffffff;
+  /* Chữ trắng */
   transition: 0.3s;
 }
 
-.form-input:focus, .form-textarea:focus, .form-select:focus {
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
   border-color: var(--primary);
   outline: none;
   box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
@@ -132,9 +145,10 @@
   min-width: 280px;
   padding: 16px 20px;
   border-radius: var(--radius-md);
-  background: var(--white); /* Nền #111418 */
+  background: var(--white);
+  /* Nền #111418 */
   border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -152,8 +166,15 @@
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(100%); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* RESPONSIVE CHO MOBILE */
@@ -163,7 +184,7 @@
     right: 16px;
     left: 16px;
   }
-  
+
   .toast {
     min-width: auto;
     width: 100%;
@@ -171,37 +192,77 @@
 }
 
 .pagination-space {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 60px;
 }
 
 .page-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    border: 1px solid var(--border-soft);
-    background: rgba(255, 255, 255, 0.03);
-    color: var(--text-muted);
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
 }
 
 .page-btn.active {
-    background: var(--cyan);
-    color: #000;
-    border-color: var(--cyan);
-    font-weight: 700;
-    box-shadow: 0 0 15px var(--cyan);
+  background: var(--cyan);
+  color: #000;
+  border-color: var(--cyan);
+  font-weight: 700;
+  box-shadow: 0 0 15px var(--cyan);
 }
 
 .page-btn:hover:not(.active) {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    background: rgba(0, 242, 255, 0.05);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  background: rgba(0, 242, 255, 0.05);
+}
+
+/* 7. CODE BLOCK WITH COPY BUTTON */
+.code-block-wrapper {
+  position: relative;
+}
+
+.code-block-wrapper pre {
+  padding-top: 40px !important;
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.copy-code-btn:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.copy-code-btn.copied {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #10b981;
 }
