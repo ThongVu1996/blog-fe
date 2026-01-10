@@ -1,53 +1,62 @@
 import { TrendingUp, Mail } from 'lucide-react';
 import PostCard from '../components/features/PostCard';
 import { useNavigate } from 'react-router-dom';
-import { usePosts } from '../hooks';
+import { usePosts, useFeaturedPosts, useTrendingPosts } from '../hooks';
 import PageLoader from '../components/common/PageLoader';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const { data: posts = [], isLoading } = usePosts();
+  const { data: postsData, isLoading: isPostsLoading } = usePosts({ per_page: 5 });
+  const { data: featuredPosts = [], isLoading: isFeaturedLoading } = useFeaturedPosts();
+  const { data: trendingPosts = [], isLoading: isTrendingLoading } = useTrendingPosts(3);
+
+  const isLoading = isPostsLoading || isFeaturedLoading || isTrendingLoading;
 
   if (isLoading) return <PageLoader />;
 
-  // Lấy bài viết đầu tiên làm tiêu điểm (Featured)
-  const featuredPost = posts[0];
-  console.log(posts);
-  const remainingPosts = posts;
+  const posts = postsData?.data || [];
+
+  // Get featured posts for the grid (max 3)
+  const mainFeatured = featuredPosts[0];
+  const subFeatured1 = featuredPosts[1];
+  const subFeatured2 = featuredPosts[2];
 
   return (
     <div className="animate-fade">
       {/* 1. FEATURED SECTION (Tin tiêu điểm) */}
-      {featuredPost && (
+      {mainFeatured && (
         <section className="featured-grid">
-          <div onClick={() => navigate(`/posts/${featuredPost.slug}`)} className="main-featured" style={{ cursor: 'pointer' }}>
-            <img src={featuredPost.banner || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200"}
+          <div onClick={() => navigate(`/posts/${mainFeatured.slug}`)} className="main-featured" style={{ cursor: 'pointer' }}>
+            <img src={mainFeatured.image || "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200"}
               className="featured-img" alt="Featured" />
             <div className="featured-content">
               <span className="badge">Trending Now</span>
-              <h2 className="featured-title">{featuredPost.title}</h2>
-              <p>{featuredPost.summary || "Khám phá những thay đổi quan trọng trong hệ thống kĩ thuật mới nhất..."}</p>
+              <h2 className="featured-title">{mainFeatured.title}</h2>
+              <p>{mainFeatured.excerpt || "Khám phá những thay đổi quan trọng trong hệ thống kĩ thuật mới nhất..."}</p>
             </div>
           </div>
 
           <div className="sub-featured-group">
-            {/* Bạn có thể lấy thêm 2 bài tiếp theo nếu muốn giống hệt HTML mẫu */}
-            <div className="main-featured sub-box">
-              <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600" className="featured-img"
-                alt="Security" />
-              <div className="featured-content small">
-                <span className="badge danger">Security</span>
-                <h4>Hệ thống bảo mật CI/CD</h4>
+            {subFeatured1 && (
+              <div onClick={() => navigate(`/posts/${subFeatured1.slug}`)} className="main-featured sub-box" style={{ cursor: 'pointer' }}>
+                <img src={subFeatured1.image || "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600"}
+                  className="featured-img" alt={subFeatured1.title} />
+                <div className="featured-content small">
+                  <span className="badge danger">{subFeatured1.category?.name || 'Tech'}</span>
+                  <h4>{subFeatured1.title}</h4>
+                </div>
               </div>
-            </div>
-            <div className="main-featured sub-box">
-              <img src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=600" className="featured-img"
-                alt="DevOps" />
-              <div className="featured-content small">
-                <span className="badge info">DevOps</span>
-                <h4>Lộ trình DevOps 2026</h4>
+            )}
+            {subFeatured2 && (
+              <div onClick={() => navigate(`/posts/${subFeatured2.slug}`)} className="main-featured sub-box" style={{ cursor: 'pointer' }}>
+                <img src={subFeatured2.image || "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?q=80&w=600"}
+                  className="featured-img" alt={subFeatured2.title} />
+                <div className="featured-content small">
+                  <span className="badge info">{subFeatured2.category?.name || 'DevOps'}</span>
+                  <h4>{subFeatured2.title}</h4>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       )}
@@ -64,8 +73,8 @@ const HomePage = () => {
           </div>
 
           <div className="news-list">
-            {remainingPosts.length > 0 ? (
-              remainingPosts.map(p =>
+            {posts.length > 0 ? (
+              posts.map(p =>
                 <PostCard key={p.id} post={p} />)
             ) : (
               <p style={{ color: 'var(--text-muted)' }}>Đang cập nhật các bản tin mới nhất...</p>
@@ -79,18 +88,17 @@ const HomePage = () => {
             <h4>
               <TrendingUp size={16} /> TRENDING TOPICS
             </h4>
-            <div className="trending-item">
-              <span className="trending-num">01</span>
-              <div className="trending-text">Tối ưu chi phí AWS Cloud</div>
-            </div>
-            <div className="trending-item">
-              <span className="trending-num">02</span>
-              <div className="trending-text">Bảo mật Docker Image</div>
-            </div>
-            <div className="trending-item">
-              <span className="trending-num">03</span>
-              <div className="trending-text">Giám sát Prometheus</div>
-            </div>
+            {trendingPosts.map((post, index) => (
+              <div
+                key={post.id}
+                className="trending-item"
+                onClick={() => navigate(`/posts/${post.slug}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <span className="trending-num">{String(index + 1).padStart(2, '0')}</span>
+                <div className="trending-text">{post.title}</div>
+              </div>
+            ))}
           </div>
 
           {/* Newsletter Box */}

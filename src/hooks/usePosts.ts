@@ -3,12 +3,36 @@ import { postService } from '../services';
 import { queryKeys } from '../lib/queryClient';
 
 /**
- * Hook to fetch all posts with optional filters
+ * Hook to fetch all posts with optional filters and pagination
  */
-export const usePosts = (params?: { category_id?: string | number }) => {
+export const usePosts = (params?: {
+    category_id?: string | number;
+    page?: number;
+    per_page?: number;
+}) => {
     return useQuery({
         queryKey: queryKeys.posts.list(params),
         queryFn: () => postService.getAll(params),
+    });
+};
+
+/**
+ * Hook to fetch trending posts
+ */
+export const useTrendingPosts = (limit: number = 5, days: number = 7) => {
+    return useQuery({
+        queryKey: ['posts', 'trending', limit, days],
+        queryFn: () => postService.getTrending(limit, days),
+    });
+};
+
+/**
+ * Hook to fetch featured posts
+ */
+export const useFeaturedPosts = () => {
+    return useQuery({
+        queryKey: ['posts', 'featured'],
+        queryFn: () => postService.getFeatured(),
     });
 };
 
