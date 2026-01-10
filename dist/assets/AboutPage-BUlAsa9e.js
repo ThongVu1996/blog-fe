@@ -1,0 +1,1 @@
+import{j as e}from"./index-B8S532Nu.js";const s=()=>e.jsxs("div",{className:"animate-fade container",style:{paddingTop:"80px",textAlign:"center"},children:[e.jsx("h1",{children:"About Me"}),e.jsx("p",{children:"Full-stack Developer & DevOps Enthusiast."})]});export{s as default};
